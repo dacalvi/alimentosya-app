@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 
-const IconHeader = (props) => {
+const AYIconHeader = (props) => {
     
     return (
       <View

@@ -15,11 +15,10 @@ export default class AuthLoadingScreen extends React.Component {
 
   _bootstrapAsync = async () => {
     const token = await AsyncStorage.getItem('token');
-    const usertype = await AsyncStorage.getItem('type');
-    if(token && usertype){
+    
+    if(token){
       console.log("TOKEN: " + token);
-      console.log("USERTYPE: " + usertype);
-      this.props.navigation.navigate(usertype == 'profesional' ? 'ProfesionalApp' : 'ClienteApp');
+      this.props.navigation.navigate('ClienteApp');
     }else{
       this.props.navigation.navigate('Auth');
     }

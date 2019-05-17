@@ -1,5 +1,5 @@
 import React from 'react';
-import  LogoTitle  from './LogoTitle';
+import  LogoTitle  from '../components/LogoTitle';
 import { Button } from 'react-native-material-ui';
 import {
 	Dimensions,

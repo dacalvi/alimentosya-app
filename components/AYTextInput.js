@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, Image, TextInput } from 'react-native';
 import { Avatar, Checkbox } from 'react-native-paper';
 
-export default ATextInput = (props) => {
+export default AYTextInput = (props) => {
     
     return (
         <View style={{ flexDirection: 'row', flex: 1, height: 40, maxHeight: 40, margin: 10, marginBottom: 20}}>

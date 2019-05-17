@@ -1,10 +1,10 @@
 import React from "react";
-import  LogoTitle  from './LogoTitle';
+import  LogoTitle  from '../components/LogoTitle';
 import { Dimensions, StyleSheet, View, ScrollView, KeyboardAvoidingView, Text } from 'react-native';
 import { Button, Snackbar  } from 'react-native-material-ui';
 import RestApi from '../common/RestApi';
-import ATextInput from '../components/ATextInput';
-import IconHeader from '../components/IconHeader';
+import ATextInput from '../components/AYTextInput';
+
 import validate from '../constants/validate_wrapper';
 import { connect } from 'react-redux';
 
@@ -92,11 +92,7 @@ class RegistroCliente extends React.Component {
             enabled>  
             <ScrollView>
               <View style={{marginleft: 20, marginRight:20, marginTop:20}} >
-                <IconHeader 
-                  source={require('../assets/images/icon-user-black.png')}
-                  topTitle="Registro"
-                  title="Usuario"
-                  style={{marginBottom: 20}} />
+                
                 
                 <ATextInput 
                   source={ require('../assets/images/icon-user.png') }
