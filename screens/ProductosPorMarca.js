@@ -2,8 +2,9 @@ import React from 'react';
 import  LogoTitle  from '../components/LogoTitle';
 import AYBuscador from '../components/AYBuscador';
 import AYCategoriaChip from '../components/AYCategoriaChip';
-import AYMarcaButton from '../components/AYMarcaButton';
+import AYProducto from '../components/AYProducto';
 import AYChatButton from '../components/AYChatButton';
+import AYTituloMarca from '../components/AYTituloMarca';
 import { Button } from 'react-native-material-ui';
 import { Image, View, Text, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { TextInput, Colors } from 'react-native-paper';
@@ -21,7 +22,7 @@ function BotonCategoria(props){
 }
 
 
-class Marcas extends React.Component {
+class ProductosPorMarca extends React.Component {
   
   static navigationOptions = {
     headerTitle: <LogoTitle />,
@@ -46,16 +47,15 @@ class Marcas extends React.Component {
 
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
-          <AYBuscador onSearch={()=>{ console.log('search')}}/>
-          
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Image style={{ flex:1, width: null, height: 170 }} resizeMode='cover' source={require('../assets/images/envio_gratis.png')} />
-          </View>
-
-
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
-            <Text style={{marginTop: 10, width: '40%', marginLeft: 20}}>Elegí tu marca</Text>
-            <View style={{ flex:1, flexDirection: 'row', width: '40%'}}>
+            <AYBuscador onSearch={()=>{ console.log('search')}}/>
+            
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
+            
+            <View style={{width: '40%', paddingLeft: 10, paddingTop: 5}}>
+                <AYTituloMarca image={require('../assets/images/marca.png')} titulo="Alimento para perros"/>
+            </View>
+            
+            <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
               <AYCategoriaChip 
                 text="Perros" 
                 icon={require('../assets/images/icono_perro.png')}
@@ -70,9 +70,32 @@ class Marcas extends React.Component {
           </View>
 
 
-          <View style={{width: '50%'}}>
-            <AYMarcaButton onPress={()=>{this.props.navigation.navigate('ProductosPorMarca')}}/>
-          </View>
+
+            <View style={{width: '100%'}}>
+            <AYProducto 
+                producto={{
+                    marca: "Royal Canin", 
+                    producto_nombre: "Mini Adult",
+                    presentaciones: [
+                        {
+                            id_presentacion: '1',
+                            presentacion_nombre: '7,5Kg', 
+                            presentacion_precio: '$1327',
+                            image: 'https://via.placeholder.com/100x150?text=7.5Kg',
+                            precio: '1234'
+                        } , {
+                            id_presentacion: '2',
+                            presentacion_nombre: '15Kg', 
+                            presentacion_precio: '$5000',
+                            image: 'https://via.placeholder.com/100x150?text=15Kg',
+                            precio: '5641'
+                        }
+                    ]}} 
+                onComprarPressed={(selectedItem, presentacion, cantidad)=>{console.log(selectedItem, presentacion, cantidad)}}
+                cantidadInicial={1}
+                />
+
+            </View>
 
 
           <View style={{ height: 150 }} />
@@ -98,7 +121,7 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Marcas);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductosPorMarca);
 
 
   

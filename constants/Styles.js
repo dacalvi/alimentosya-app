@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
   },
     botonAevra: {
       color: 'white',
-      backgroundColor: '#00AAB4', 
-      borderRadius: 30
+      backgroundColor: '#FF0000', 
+      borderRadius: 20
     },
     container: {
       flex: 1,
