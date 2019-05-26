@@ -21,7 +21,7 @@ export default createAppContainer(createSwitchNavigator( {
     CategoriasListado: CategoriasListado,
     Buscar: Buscar,
     MarcasListado: MarcasListado,
-    ProductosPorMarca: ProductosPorMarca
+    ProductosPorMarca: ProductosPorMarca,
     },{initialRouteName: 'Marcas'}),
 
   Auth: createStackNavigator({ 

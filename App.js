@@ -12,7 +12,6 @@ import { AsyncStorage } from 'react-native';
 
 let store;
 
-
 AsyncStorage.getItem('state', (err, persistedState)=>{
   if(persistedState == null){
     store = createStore(rootReducer);
@@ -74,9 +73,6 @@ export default class App extends React.Component {
       }),
     ]);
   };
-
-
-
   
   _handleLoadingError = error => {
     // In this case, you might want to report the error to your error
@@ -108,7 +104,6 @@ const uiTheme = {
     }
   }
 };
-
 
 const styles = StyleSheet.create({
   container: {
