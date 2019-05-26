@@ -66,7 +66,18 @@ class LoginCliente extends React.Component {
         style={styles.container} 
         behavior="position" 
         keyboardVerticalOffset={-StatusBar.currentHeight}
-        enabled>    
+        enabled>                  <TouchableHighlight 
+        onPress={ this.btnIngresarClick() }
+        style={{    
+            backgroundColor: '#FF0000', 
+            borderRadius: 20,
+            width: '90%',
+            height: 60,
+            justifyContent: 'center',
+            alignContent: 'center'
+          }}> 
+            <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Ingresar</Text>
+        </TouchableHighlight>
     		
             
             <AYTitleIcon text="Ingresar a mi cuenta" imageIcon={require('../assets/images/icono_patita.png')} />
