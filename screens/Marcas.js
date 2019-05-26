@@ -5,20 +5,16 @@ import AYCategoriaChip from '../components/AYCategoriaChip';
 import AYMarcaButton from '../components/AYMarcaButton';
 import AYChatButton from '../components/AYChatButton';
 import { Button } from 'react-native-material-ui';
-import { Image, View, Text, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { Image, View, Text, ScrollView } from 'react-native';
 import { TextInput, Colors } from 'react-native-paper';
 import styles from '../constants/Styles';
 import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import FullWidthImage from 'react-native-fullwidth-image';
+import RestApi from '../common/RestApi';
 
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
-
-
-function BotonCategoria(props){
-    return <div>Hello {props.name}</div>
-}
 
 
 class Marcas extends React.Component {
@@ -30,20 +26,27 @@ class Marcas extends React.Component {
     },
     headerTintColor: '#FF0000',
     headerTitleStyle: {flex: 1, textAlign: 'center'}
-  };
+  }
 
   state = {
     username: '',
     password: '',
-    categorias : [
-        {key:'1','nombre': 'Electricidad'},
-        {key:'2','nombre': 'Plomeria'}
-    ]
-  };
+    marcas: []
+  }
+
+  componentWillMount(){
+    const api = new RestApi();
+    api.marcas()
+    .then((marcas)=>{
+      this.setState({marcas});
+    })
+    .catch((err)=>{
+      console.log(err);
+    });
+  }
 
   render() {
     return (
-
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
           <AYBuscador onSearch={()=>{ console.log('search')}}/>
@@ -51,7 +54,6 @@ class Marcas extends React.Component {
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             <Image style={{ flex:1, width: null, height: 170 }} resizeMode='cover' source={require('../assets/images/envio_gratis.png')} />
           </View>
-
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
             <Text style={{marginTop: 10, width: '40%', marginLeft: 20}}>Elegí tu marca</Text>
@@ -69,24 +71,31 @@ class Marcas extends React.Component {
             </View>
           </View>
 
-
-          <View style={{width: '50%'}}>
-            <AYMarcaButton onPress={()=>{this.props.navigation.navigate('ProductosPorMarca')}}/>
+          <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
+            {this.state.marcas.map((marca, i)=>{
+                  return (
+                    <AYMarcaButton 
+                      key={i}
+                      name={marca.name}
+                      logo={marca.logo} 
+                      onPress={()=>{this.props.navigation.navigate('ProductosPorMarca')}}
+                    />
+                  );
+              })}
           </View>
-
 
           <View style={{ height: 150 }} />
         </ScrollView>
-        <View><AYChatButton /></View>
-      </View>
 
+        <Text style={{marginTop: 10, width: '40%', marginLeft: 20}} onPress={()=>{this.props.navigation.navigate('Consultas')}} >Consultas</Text>
 
-
-    	
-    );
+        <View>
+          <AYChatButton />
+        </View>
+      </View>    	
+    )
   }
-}
-
+};
 
 function mapStateToProps(state){
     return {} 

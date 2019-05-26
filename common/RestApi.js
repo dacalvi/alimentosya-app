@@ -4,6 +4,14 @@ import { API_URL } from './config';
 
 export default class RestApi {
 
+  handleErrors(response) {
+    console.log(response);
+    if (!response.ok) {
+    throw Error(response.statusText);
+    }
+    return response;
+    }
+
   post(endpoint, params){
     return new Promise((resolve, reject)=>{
       let headers = {
@@ -26,12 +34,7 @@ export default class RestApi {
           }));
       });
     });
-
-
-
-
-
-  }
+  }  
 
   get(endpoint){
     return new Promise((resolve, reject)=>{
@@ -54,6 +57,44 @@ export default class RestApi {
           method: 'GET',
           headers: headers
         }));
+      });
+    });
+  }
+
+  marcas(){
+    return new Promise((resolve, reject)=>{
+      let api = this.get(API_URL + 'marcas');
+      api.then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.error){
+          reject(responseJson);
+        }else{
+          resolve(responseJson);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  consultar(params){
+    return new Promise((resolve, reject)=>{
+      let api = this.post( API_URL + 'consultas', params);
+      api
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.error){
+          console.log(responseJson);
+          reject(responseJson);          
+        }else{
+          console.log(responseJson);
+          resolve(responseJson);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error.error);
       });
     });
   }
