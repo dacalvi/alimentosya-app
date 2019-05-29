@@ -71,14 +71,14 @@ class Marcas extends React.Component {
             </View>
           </View>
 
-          <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
             {this.state.marcas.map((marca, i)=>{
                   return (
                     <AYMarcaButton 
                       key={i}
                       name={marca.name}
                       logo={marca.logo} 
-                      onPress={()=>{this.props.navigation.navigate('ProductosPorMarca')}}
+                      onPress={()=>{this.props.navigation.navigate('ProductosPorMarca', { marca })}}
                     />
                   );
               })}
@@ -108,6 +108,3 @@ function mapDispatchToProps(dispatch){
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Marcas);
-
-
-  

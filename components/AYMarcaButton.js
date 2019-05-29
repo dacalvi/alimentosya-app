@@ -13,6 +13,7 @@ const AYMarcaButton = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress}>
             <View style={{ 
+                width: 175,
                 borderColor: '#EEEEEE', 
                 borderWidth: 10, 
                 margin: 10, 
@@ -21,8 +22,7 @@ const AYMarcaButton = (props) => {
                 alignItems: 'center',
                 padding: 20
                 }}>
-                <Image style={styles.stretch} source={require('../assets/images/marca.png')}/>
-                <Text style={{marginTop: 10, width: '100%', marginLeft: 20}} >{props.name}</Text>
+                <Image style={styles.stretch} source={{uri: props.logo}}/>
             </View>
         </TouchableOpacity>
     )
