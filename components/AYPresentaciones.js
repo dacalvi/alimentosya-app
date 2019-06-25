@@ -5,7 +5,7 @@ import AYPresentacion from './AYPresentacion';
 export default class AYPresentaciones extends React.Component{
     
     state = {
-        indiceSeleccionado: null
+        indiceSeleccionado: 0
     }
 
     constructor(props){

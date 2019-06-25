@@ -17,6 +17,7 @@ export default class AYProducto extends React.Component{
     }
 
     componentWillMount(){
+        
         this.setState({
             currentPresentacion : this.props.producto.presentaciones[0],
             cantidad : 0,
@@ -48,7 +49,7 @@ export default class AYProducto extends React.Component{
                     
                     <AYPresentaciones 
                         presentaciones={ this.props.producto.presentaciones }
-                        indiceInicial={ 1 }
+                        indiceInicial={ 0 }
                         onSelectPresentacion={(currentPresentacion)=>{ 
                             this.setState({
                                 currentPresentacion,
@@ -56,7 +57,7 @@ export default class AYProducto extends React.Component{
                             }) 
                         }}
                         />
-                    { this.state.total == 0 ? <Text></Text> : <Text style={{fontWeight: 'bold', fontSize: 20}}>${this.state.total}</Text> }
+                    { <Text style={{fontWeight: 'bold', fontSize: 20}}>${this.state.total}</Text> }
                     <AYStepper 
                         min={0} 
                         max={10} 

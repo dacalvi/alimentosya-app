@@ -19,6 +19,13 @@ const imageWidth = layout.window.width;
 
 
 class ProductosPorMarca extends React.Component {
+
+  productosCompletos = [];
+
+  constructor(props){
+    super(props);
+    
+  }
   
   static navigationOptions = {
     headerTitle: <LogoTitle />,
@@ -38,6 +45,7 @@ class ProductosPorMarca extends React.Component {
     const api = new RestApi();
     api.productos( this.props.navigation.state.params.marca.id )
     .then((productos)=>{
+      this.productosCompletos = productos;
       this.setState({productos});
     })
     .catch((err)=>{
@@ -54,23 +62,24 @@ class ProductosPorMarca extends React.Component {
             
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
             
-            <View style={{width: '40%', paddingLeft: 10, paddingTop: 5}}>
-                <AYTituloMarca image={{uri: this.props.navigation.state.params.marca.logo}} titulo="Alimento para perros"/>
+              <View style={{width: '40%', paddingLeft: 10, paddingTop: 5}}>
+                  <AYTituloMarca image={{uri: this.props.navigation.state.params.marca.logo}} titulo="Alimento para perros"/>
+              </View>
+              
+              <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
+                <AYCategoriaChip 
+                  text="Perros" 
+                  icon={require('../assets/images/icono_perro.png')}
+                  onPress={()=>{ console.log('Perros')}}
+                  />
+                <AYCategoriaChip 
+                  text="Gatos" 
+                  icon={require('../assets/images/icono_gato.png')} 
+                  onPress={()=>{ console.log('Gatos')}}
+                  />
+              </View>
+              
             </View>
-            
-            <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
-              <AYCategoriaChip 
-                text="Perros" 
-                icon={require('../assets/images/icono_perro.png')}
-                onPress={()=>{ console.log('Perros')}}
-                />
-              <AYCategoriaChip 
-                text="Gatos" 
-                icon={require('../assets/images/icono_gato.png')} 
-                onPress={()=>{ console.log('Gatos')}}
-                />
-            </View>
-          </View>
           
           <View style={{width: '100%'}}>
           {this.state.productos.map((producto, i)=>{
@@ -107,6 +116,3 @@ function mapDispatchToProps(dispatch){
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductosPorMarca);
-
-
-  
