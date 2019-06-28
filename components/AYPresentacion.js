@@ -26,7 +26,7 @@ export default class AYPresentacion extends React.Component{
                             this.props.onSelectPresentacion(this.props.presentacion);
                             }}
                     >
-                    <Text style={{color: 'white', fontWeight: 'bold'}}>{this.props.presentacion.presentacion_nombre}</Text>
+                    <Text style={{color: 'white', fontWeight: 'bold'}}>{this.props.presentacion.weight}</Text>
                 </TouchableOpacity>
             </View>
         )

@@ -12,17 +12,20 @@ import styles from '../constants/Styles';
 import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import FullWidthImage from 'react-native-fullwidth-image';
+import RestApi from '../common/RestApi';
 
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
 
 
-function BotonCategoria(props){
-    return <div>Hello {props.name}</div>
-}
-
-
 class ProductosPorMarca extends React.Component {
+
+  productosCompletos = [];
+
+  constructor(props){
+    super(props);
+    
+  }
   
   static navigationOptions = {
     headerTitle: <LogoTitle />,
@@ -34,13 +37,21 @@ class ProductosPorMarca extends React.Component {
   };
 
   state = {
-    username: '',
-    password: '',
-    categorias : [
-        {key:'1','nombre': 'Electricidad'},
-        {key:'2','nombre': 'Plomeria'}
-    ]
+    marca: this.props.navigation.state.params.marca,
+    productos: []
   };
+
+  componentWillMount(){    
+    const api = new RestApi();
+    api.productos( this.props.navigation.state.params.marca.id )
+    .then((productos)=>{
+      this.productosCompletos = productos;
+      this.setState({productos});
+    })
+    .catch((err)=>{
+      console.log(err);
+    });
+  }
 
   render() {
     return (
@@ -51,65 +62,48 @@ class ProductosPorMarca extends React.Component {
             
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
             
-            <View style={{width: '40%', paddingLeft: 10, paddingTop: 5}}>
-                <AYTituloMarca image={require('../assets/images/marca.png')} titulo="Alimento para perros"/>
+              <View style={{width: '40%', paddingLeft: 10, paddingTop: 5}}>
+                  <AYTituloMarca image={{uri: this.props.navigation.state.params.marca.logo}} titulo="Alimento para perros"/>
+              </View>
+              
+              <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
+                <AYCategoriaChip 
+                  text="Perros" 
+                  icon={require('../assets/images/icono_perro.png')}
+                  onPress={()=>{ console.log('Perros')}}
+                  />
+                <AYCategoriaChip 
+                  text="Gatos" 
+                  icon={require('../assets/images/icono_gato.png')} 
+                  onPress={()=>{ console.log('Gatos')}}
+                  />
+              </View>
+              
             </View>
-            
-            <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
-              <AYCategoriaChip 
-                text="Perros" 
-                icon={require('../assets/images/icono_perro.png')}
-                onPress={()=>{ console.log('Perros')}}
-                />
-              <AYCategoriaChip 
-                text="Gatos" 
-                icon={require('../assets/images/icono_gato.png')} 
-                onPress={()=>{ console.log('Gatos')}}
-                />
-            </View>
+          
+          <View style={{width: '100%'}}>
+          {this.state.productos.map((producto, i)=>{
+                    return (                     
+                      <AYProducto 
+                      key={i}
+                      producto={{
+                          marca: this.props.navigation.state.params.marca.name, 
+                          producto_nombre: producto.title,
+                          presentaciones: producto.presentations}} 
+                      onComprarPressed={(selectedItem, presentacion, cantidad)=>{console.log(selectedItem, presentacion, cantidad)}}
+                      cantidadInicial={0}
+                      />
+                    );
+                })}
           </View>
-
-
-
-            <View style={{width: '100%'}}>
-            <AYProducto 
-                producto={{
-                    marca: "Royal Canin", 
-                    producto_nombre: "Mini Adult",
-                    presentaciones: [
-                        {
-                            id_presentacion: '1',
-                            presentacion_nombre: '7,5Kg', 
-                            presentacion_precio: '$1327',
-                            image: 'https://via.placeholder.com/100x150?text=7.5Kg',
-                            precio: '1234'
-                        } , {
-                            id_presentacion: '2',
-                            presentacion_nombre: '15Kg', 
-                            presentacion_precio: '$5000',
-                            image: 'https://via.placeholder.com/100x150?text=15Kg',
-                            precio: '5641'
-                        }
-                    ]}} 
-                onComprarPressed={(selectedItem, presentacion, cantidad)=>{console.log(selectedItem, presentacion, cantidad)}}
-                cantidadInicial={1}
-                />
-
-            </View>
-
 
           <View style={{ height: 150 }} />
         </ScrollView>
         <View><AYChatButton /></View>
-      </View>
-
-
-
-    	
+      </View>   	
     );
   }
 }
-
 
 function mapStateToProps(state){
     return {} 
@@ -122,6 +116,3 @@ function mapDispatchToProps(dispatch){
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductosPorMarca);
-
-
-  

@@ -1,7 +1,7 @@
 import React from 'react';
 import  LogoTitle  from '../components/LogoTitle';
 import { Button } from 'react-native-material-ui';
-import { Image, View, Text, ScrollView, TouchableHighlight } from 'react-native';
+import { Image, View, Text, ScrollView, TouchableHighlight, Alert} from 'react-native';
 import { TextInput, Colors } from 'react-native-paper';
 import styles from '../constants/Styles';
 import layout from '../constants/Layout';
@@ -39,14 +39,14 @@ class Consultas extends React.Component {
       })
       .then((response)=>{
         this.props.navigation.navigate('Marcas');
-        alert(response.success);
+        Alert.alert('Consulta', response.success);
       })
       .catch((err)=>{
         console.log("ERROR?"+err);
-        alert(response.error);
+        Alert.alert('Consulta', response.error);
       });
     }else{
-      alert('Por favor, complete todos los datos!');
+      Alert.alert('Consulta', 'Por favor, complete todos los datos!');
     }
   }
 

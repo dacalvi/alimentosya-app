@@ -1,34 +1,3 @@
-/*
-const styles = StyleSheet.create({
-  botonAevra: {
-    color: 'white',
-    backgroundColor: '#00AAB4', 
-    borderRadius: 30
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 0
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 10,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: -10,
-    marginBottom: 20,
-  }
-  
-});
-*/
-
 import React from 'react';
 import  LogoTitle  from '../components/LogoTitle';
 import { Button } from 'react-native-material-ui';

@@ -17,15 +17,16 @@ export default class AYProducto extends React.Component{
     }
 
     componentWillMount(){
+        
         this.setState({
             currentPresentacion : this.props.producto.presentaciones[0],
-            cantidad : 1,
-            total: this.props.producto.presentaciones[0].precio * 1
+            cantidad : 0,
+            total: this.props.producto.presentaciones[0].price * 0
         });
     }
 
     update(){
-        let total = this.state.cantidad * this.state.currentPresentacion.precio;
+        let total = this.state.cantidad * this.state.currentPresentacion.price;
         this.setState({total});
     }
 
@@ -48,19 +49,19 @@ export default class AYProducto extends React.Component{
                     
                     <AYPresentaciones 
                         presentaciones={ this.props.producto.presentaciones }
-                        indiceInicial={ 1 }
+                        indiceInicial={ 0 }
                         onSelectPresentacion={(currentPresentacion)=>{ 
                             this.setState({
                                 currentPresentacion,
-                                total: currentPresentacion.precio * this.state.cantidad
+                                total: currentPresentacion.price * this.state.cantidad
                             }) 
                         }}
                         />
-                    { this.state.total == 0 ? <Text></Text> : <Text style={{fontWeight: 'bold', fontSize: 20}}>${this.state.total}</Text> }
+                    { <Text style={{fontWeight: 'bold', fontSize: 20}}>${this.state.total}</Text> }
                     <AYStepper 
-                        min={1} 
+                        min={0} 
                         max={10} 
-                        initialValue={1} 
+                        initialValue={0} 
                         onChange={(cantidad)=> {
                             this.setState({cantidad}, ()=>{
                                 this.update();

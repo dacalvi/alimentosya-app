@@ -16,7 +16,6 @@ import RestApi from '../common/RestApi';
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
 
-
 class Marcas extends React.Component {
   
   static navigationOptions = {
@@ -24,9 +23,12 @@ class Marcas extends React.Component {
     headerStyle: {
       backgroundColor: '#FFFFFF',
     },
+    headerRight: <Text></Text>,
     headerTintColor: '#FF0000',
     headerTitleStyle: {flex: 1, textAlign: 'center'}
   }
+
+  todosLosProductos = [];
 
   state = {
     username: '',
@@ -34,10 +36,21 @@ class Marcas extends React.Component {
     marcas: []
   }
 
+  filtrarPorAnimal(animal){
+    console.log(animal, this.state.marcas);
+    if(animal){
+      marcas = this.todosLosProductos.filter(producto => producto.tipos.indexOf(animal) > -1)      
+      console.log("ESTOS SON LOS PRODUCTOS FILTRADOS: ", marcas);
+      this.setState({marcas});
+    }
+  }
+
   componentWillMount(){
     const api = new RestApi();
     api.marcas()
     .then((marcas)=>{
+      console.log(marcas)
+      this.todosLosProductos = marcas;
       this.setState({marcas});
     })
     .catch((err)=>{
@@ -61,24 +74,28 @@ class Marcas extends React.Component {
               <AYCategoriaChip 
                 text="Perros" 
                 icon={require('../assets/images/icono_perro.png')}
-                onPress={()=>{ console.log('Perros')}}
+                onPress={()=>{ 
+                  this.filtrarPorAnimal('Perro');
+                  console.log('Perros')}}
                 />
               <AYCategoriaChip 
                 text="Gatos" 
                 icon={require('../assets/images/icono_gato.png')} 
-                onPress={()=>{ console.log('Gatos')}}
+                onPress={()=>{                  
+                  this.filtrarPorAnimal('Gato');
+                  console.log('Gatos')}}
                 />
             </View>
           </View>
 
-          <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
+          <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
             {this.state.marcas.map((marca, i)=>{
                   return (
                     <AYMarcaButton 
                       key={i}
                       name={marca.name}
                       logo={marca.logo} 
-                      onPress={()=>{this.props.navigation.navigate('ProductosPorMarca')}}
+                      onPress={()=>{this.props.navigation.navigate('ProductosPorMarca', { marca })}}
                     />
                   );
               })}
@@ -108,6 +125,3 @@ function mapDispatchToProps(dispatch){
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Marcas);
-
-
-  
