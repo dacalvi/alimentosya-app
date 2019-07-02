@@ -118,6 +118,28 @@ export default class RestApi {
     });
   }
 
+  buscar(params){
+    return new Promise((resolve, reject)=>{
+      let api = this.post( API_URL + 'buscar', params);
+      api
+      //.then(this.handleErrors)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.error){
+          console.log(responseJson);
+          reject(responseJson);          
+        }else{
+          console.log(responseJson);
+          resolve(responseJson);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error.error);
+      });
+    });
+  }
+
   registerProfesional(params){
     return new Promise((resolve, reject)=>{
       let api = this.post( API_URL + 'register/profesional', params);

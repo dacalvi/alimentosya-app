@@ -5,8 +5,6 @@ import AYCategoriaChip from '../components/AYCategoriaChip';
 import AYProducto from '../components/AYProducto';
 import AYChatButton from '../components/AYChatButton';
 import AYTituloMarca from '../components/AYTituloMarca';
-import AYCarritoIcono from '../components/AYCarritoIcono';
-
 import { Button } from 'react-native-material-ui';
 import { Image, View, Text, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { TextInput, Colors } from 'react-native-paper';
@@ -20,18 +18,14 @@ const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
 
 
-class ProductosPorMarca extends React.Component {
-
-  productosCompletos = [];
+class ResultadoBusqueda extends React.Component {
 
   constructor(props){
     super(props);
-    
   }
   
   static navigationOptions = {
     headerTitle: <LogoTitle />,
-    headerRight: <AYCarritoIcono/>,
     headerStyle: {
       backgroundColor: '#FFFFFF',
     },
@@ -46,9 +40,9 @@ class ProductosPorMarca extends React.Component {
 
   componentWillMount(){    
     const api = new RestApi();
-    api.productos( this.props.navigation.state.params.marca.id )
+    api.buscar( this.props.navigation.state.params )
     .then((productos)=>{
-      this.productosCompletos = productos;
+      console.log(productos);
       this.setState({productos});
     })
     .catch((err)=>{
@@ -66,7 +60,7 @@ class ProductosPorMarca extends React.Component {
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
             
               <View style={{width: '40%', paddingLeft: 10, paddingTop: 5}}>
-                  <AYTituloMarca image={{uri: this.props.navigation.state.params.marca.logo}} titulo="Alimento para perros"/>
+                  
               </View>
               
               <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
@@ -90,7 +84,7 @@ class ProductosPorMarca extends React.Component {
                       <AYProducto 
                       key={i}
                       producto={{
-                          marca: this.props.navigation.state.params.marca.name, 
+                          marca: producto.brand_name, 
                           producto_nombre: producto.title,
                           presentaciones: producto.presentations}} 
                       onComprarPressed={(selectedItem, presentacion, cantidad)=>{console.log(selectedItem, presentacion, cantidad)}}
@@ -118,4 +112,4 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductosPorMarca);
+export default connect(mapStateToProps, mapDispatchToProps)(ResultadoBusqueda);

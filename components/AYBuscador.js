@@ -5,7 +5,7 @@ import { withTheme, Avatar } from 'react-native-paper';
 export default class AYBuscador extends React.Component{
     
     state = {
-
+        searchString : ''
     }
 
     constructor(props){
@@ -25,13 +25,19 @@ export default class AYBuscador extends React.Component{
                 }}>
                 <TextInput 
                     placeholderTextColor="white" 
-                    placeholder="Buscar Alimento" 
+                    placeholder="Buscar Alimento"
+                    onChangeText={ (searchString)=>{ this.setState({searchString}); }}
                     style={{ 
                         color: 'white', 
                         fontWeight: 'bold', 
-                        fontSize: 18 
+                        fontSize: 18,
+                        width: '80%'
                     }}/>
-                <TouchableHighlight onPress={this.props.onSearch}>
+                <TouchableHighlight onPress={() => {
+                    if(this.state.searchString !== ''){
+                        this.props.navigation.navigate('ResultadoBusqueda', {q: this.state.searchString})
+                    }
+                    }}>
                     <Avatar.Icon 
                         size={46} 
                         icon="search" 

@@ -11,20 +11,22 @@ const styles = StyleSheet.create({
 
 const AYMarcaButton = (props) => {
     return (
-        <TouchableOpacity onPress={props.onPress}>
-            <View style={{ 
-                width: 175,
+        <View style={{ 
+                
                 borderColor: '#EEEEEE', 
                 borderWidth: 10, 
-                margin: 10, 
+                margin: 10,
+                marginHorizontal:10,
                 borderRadius: 25, 
-                flex: 1,
+                
                 alignItems: 'center',
-                padding: 20
+                padding: 20,
+                width: '45%'
                 }}>
-                <Image style={styles.stretch} source={{uri: props.logo}}/>
-            </View>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={props.onPress}>
+                <Image style={styles.stretch} source={{uri: props.logo}} resizeMode={'contain'}/>
+            </TouchableOpacity>
+        </View>
     )
 };
 

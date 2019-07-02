@@ -33,7 +33,7 @@ export default class AYCategoriaChip extends React.Component{
             onPress={this.props.onPress}>
                 <View 
                     style={{ flex: 1, flexDirection: 'row', padding: 10}}>
-                    <Image style={styles.stretch} source={this.props.icon} />
+                    <Image style={styles.stretch} source={this.props.icon} resizeMode={'contain'}/>
                     <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 5 }}>{this.props.text}</Text>
                 </View>
             </TouchableOpacity>

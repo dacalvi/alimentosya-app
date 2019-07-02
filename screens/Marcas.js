@@ -47,6 +47,7 @@ class Marcas extends React.Component {
 
   componentWillMount(){
     const api = new RestApi();
+    console.log('marcas');
     api.marcas()
     .then((marcas)=>{
       console.log(marcas)
@@ -62,7 +63,7 @@ class Marcas extends React.Component {
     return (
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
-          <AYBuscador onSearch={()=>{ console.log('search')}}/>
+          <AYBuscador navigation={this.props.navigation} />
           
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             <Image style={{ flex:1, width: null, height: 170 }} resizeMode='cover' source={require('../assets/images/envio_gratis.png')} />
@@ -88,26 +89,27 @@ class Marcas extends React.Component {
             </View>
           </View>
 
-          <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between', width: '100%'}}>
-            {this.state.marcas.map((marca, i)=>{
-                  return (
-                    <AYMarcaButton 
-                      key={i}
-                      name={marca.name}
-                      logo={marca.logo} 
-                      onPress={()=>{this.props.navigation.navigate('ProductosPorMarca', { marca })}}
-                    />
-                  );
-              })}
+          <View style={{flex:1, flexDirection: 'column', width: '100%'}}>
+            <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
+              {this.state.marcas.map((marca, i)=>{
+                    return (
+                      <AYMarcaButton 
+                        key={i}
+                        name={marca.name}
+                        logo={marca.logo} 
+                        onPress={()=>{this.props.navigation.navigate('ProductosPorMarca', { marca })}}
+                      />
+                    );
+                })}
+            </View>
+
           </View>
 
           <View style={{ height: 150 }} />
         </ScrollView>
 
-        <Text style={{marginTop: 10, width: '40%', marginLeft: 20}} onPress={()=>{this.props.navigation.navigate('Consultas')}} >Consultas</Text>
-
         <View>
-          <AYChatButton />
+          <AYChatButton navigation={this.props.navigation} />
         </View>
       </View>    	
     )

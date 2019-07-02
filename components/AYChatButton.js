@@ -1,5 +1,10 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { 
+    View, 
+    Image, 
+    StyleSheet,
+    TouchableOpacity
+} from 'react-native';
 
 
 const styles = StyleSheet.create({
@@ -21,9 +26,11 @@ export default class AYChatButton extends React.Component{
 
     render(){
         return (
-            <View style={{ height: 60, alignItems: 'center', padding: 5}}>
-                <Image style={styles.stretch} source={require('../assets/images/chat.png')}/>
-            </View>
+            <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Consultas')}}>
+                <View style={{ height: 60, alignItems: 'center', padding: 5}}>
+                    <Image style={styles.stretch} source={require('../assets/images/chat.png')}/>
+                </View>
+            </TouchableOpacity>
         )
     }
 };

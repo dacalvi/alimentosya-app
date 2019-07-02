@@ -10,6 +10,7 @@ import Consultas from '../screens/Consultas';
 import CategoriasListado from '../screens/CategoriasListado';
 import Buscar from '../screens/Buscar';
 import MarcasListado from '../screens/MarcasListado';
+import ResultadoBusqueda from '../screens/ResultadoBusqueda';
 
 
 export default createAppContainer(createSwitchNavigator( {
@@ -22,6 +23,7 @@ export default createAppContainer(createSwitchNavigator( {
     Buscar: Buscar,
     MarcasListado: MarcasListado,
     ProductosPorMarca: ProductosPorMarca,
+    ResultadoBusqueda: ResultadoBusqueda
     },{initialRouteName: 'Marcas'}),
 
   Auth: createStackNavigator({ 
