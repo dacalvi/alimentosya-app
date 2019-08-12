@@ -20,8 +20,8 @@ const AYMarcaButton = (props) => {
                 borderRadius: 25, 
                 
                 alignItems: 'center',
-                padding: 20,
-                width: '45%'
+                padding: 20
+                
                 }}>
             <TouchableOpacity onPress={props.onPress}>
                 <Image style={styles.stretch} source={{uri: props.logo}} resizeMode={'contain'}/>

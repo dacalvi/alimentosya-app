@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, View } from 'react-native'
+import { Image, View, Text } from 'react-native'
+import AYCarritoIcono from '../components/AYCarritoIcono';
 class LogoTitle extends React.Component {
     render() {
       return (
@@ -7,9 +8,13 @@ class LogoTitle extends React.Component {
           height: '100%', 
           width: '100%', 
           flex: 1,
-          justifyContent: 'center', 
+          justifyContent: 'space-between', 
           flexDirection: 'row',
+          
           padding: 15 }}>
+          
+          
+
           <Image
             source={require('../assets/images/iso.png')}
             style={{ flex: 1,
@@ -17,6 +22,7 @@ class LogoTitle extends React.Component {
               width: 90,
               height: undefined }}
           />
+
         </View>
       );
     }

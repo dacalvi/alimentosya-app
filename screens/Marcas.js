@@ -12,6 +12,7 @@ import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import FullWidthImage from 'react-native-fullwidth-image';
 import RestApi from '../common/RestApi';
+import AYCarritoIcono from '../components/AYCarritoIcono';
 
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
@@ -23,7 +24,8 @@ class Marcas extends React.Component {
     headerStyle: {
       backgroundColor: '#FFFFFF',
     },
-    headerRight: <Text></Text>,
+    headerRight: <AYCarritoIcono/> ,
+    headerLeft: <Text></Text> ,
     headerTintColor: '#FF0000',
     headerTitleStyle: {flex: 1, textAlign: 'center'}
   }
@@ -89,7 +91,7 @@ class Marcas extends React.Component {
             </View>
           </View>
 
-          <View style={{flex:1, flexDirection: 'column', width: '100%'}}>
+          
             <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
               {this.state.marcas.map((marca, i)=>{
                     return (
@@ -103,7 +105,7 @@ class Marcas extends React.Component {
                 })}
             </View>
 
-          </View>
+          
 
           <View style={{ height: 150 }} />
         </ScrollView>

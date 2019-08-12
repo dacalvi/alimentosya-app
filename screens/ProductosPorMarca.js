@@ -93,7 +93,11 @@ class ProductosPorMarca extends React.Component {
                           marca: this.props.navigation.state.params.marca.name, 
                           producto_nombre: producto.title,
                           presentaciones: producto.presentations}} 
-                      onComprarPressed={(selectedItem, presentacion, cantidad)=>{console.log(selectedItem, presentacion, cantidad)}}
+                      onComprarPressed={(selectedItem, presentacion, cantidad)=>{
+                        
+                        console.log(selectedItem, presentacion, cantidad)
+                        
+                      }}
                       cantidadInicial={1}
                       />
                     );

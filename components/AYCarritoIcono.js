@@ -18,7 +18,7 @@ export default class AYCarritoIcono extends React.Component{
 
     render(){
         return (
-            <View style={{marginRight: 20}}>
+            <View style={{marginRight:10}}>
                <Image 
                 style={{
                     width: 25,
