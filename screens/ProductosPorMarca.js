@@ -103,19 +103,10 @@ class ProductosPorMarca extends React.Component {
                           producto_nombre: producto.title,
                           presentaciones: producto.presentations}} 
                       onComprarPressed={(selectedItem, presentacion, cantidad)=>{
-
-                          this.props.addToCart({
-                            cantidad,
-                            id: presentacion.id,
-                            image: presentacion.image,
-                            marca: selectedItem.marca,
-                            producto_nombre: selectedItem.producto_nombre,
-                            weight: presentacion.weight,
-                            price: presentacion.price                            
-                          });
-                          this.props.navigation.navigate('Carrito');
                         
-                        }}
+                        console.log(selectedItem, presentacion, cantidad)
+                        
+                      }}
                       cantidadInicial={1}
                       />
                     );

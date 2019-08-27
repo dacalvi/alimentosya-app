@@ -19,17 +19,15 @@ const imageWidth = layout.window.width;
 
 class Marcas extends React.Component {
   
-  static navigationOptions = ({ navigation }) => {
-    return {
-      headerTitle: <LogoTitle navigation={navigation}/>,
-      headerStyle: {
-        backgroundColor: '#FFFFFF',
-      },
-      headerRight: <AYCarritoIcono navigation={navigation}/>,
-      headerLeft: <Text></Text>,
-      headerTintColor: '#FF0000',
-      headerTitleStyle: {flex: 1, textAlign: 'center'}
-    }
+  static navigationOptions = {
+    headerTitle: <LogoTitle />,
+    headerStyle: {
+      backgroundColor: '#FFFFFF',
+    },
+    headerRight: <AYCarritoIcono/> ,
+    headerLeft: <Text></Text> ,
+    headerTintColor: '#FF0000',
+    headerTitleStyle: {flex: 1, textAlign: 'center'}
   }
 
 
@@ -93,7 +91,7 @@ class Marcas extends React.Component {
             </View>
           </View>
 
-          <View style={{flex:1, flexDirection: 'column', width: '100%'}}>
+          
             <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
               {this.state.marcas.map((marca, i)=>{
                     return (
@@ -107,7 +105,7 @@ class Marcas extends React.Component {
                 })}
             </View>
 
-          </View>
+          
 
           <View style={{ height: 150 }} />
         </ScrollView>

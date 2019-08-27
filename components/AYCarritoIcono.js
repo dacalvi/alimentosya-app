@@ -38,26 +38,24 @@ class AYCarritoIcono extends React.Component{
 
     render(){
         return (
-            <View style={{marginRight: 20}}>
-                <TouchableHighlight onPress={()=>{this.props.navigation.navigate('Carrito');}}>
-                    <Image 
-                        style={{
-                            width: 25,
-                            height: 25
-                        }}
-                        source={require('../assets/images/carrito.png')}/>
-                </TouchableHighlight>
-                    <View style={{ 
-                        left: 18,
-                        top: -10,
-                        backgroundColor: 'black', 
-                        position: 'absolute', 
-                        borderRadius: 10, 
-                        paddingLeft: 5, 
-                        paddingRight: 5
-                        }}>
-                        <Text style={{color: 'white', fontSize: 10}}>{this.state.cantidadItems}</Text>
-                    </View>
+            <View style={{marginRight:10}}>
+               <Image 
+                style={{
+                    width: 25,
+                    height: 25
+                }}
+                source={require('../assets/images/carrito.png')}/>
+                <View style={{ 
+                    left: 15,
+                    top: -10,
+                    backgroundColor: 'black', 
+                    position: 'absolute', 
+                    borderRadius: 10, 
+                    paddingLeft: 5, 
+                    paddingRight: 5
+                    }}>
+                <Text style={{color: 'white'}}>{this.props.cantidad}</Text>
+                </View>
             </View>
         )
     }
