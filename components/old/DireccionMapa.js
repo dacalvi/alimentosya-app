@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TextInput, Platform, Button, TouchableOpacity } from 'react-native';
-import PropTypes from 'prop-types';
+import defaultProps from 'prop-types';
 import Tilde from '../components/Tilde';
 import { Constants, MapView, Permissions, Location } from 'expo';
 import { ErrorRecovery } from 'expo';
@@ -153,7 +153,7 @@ export default class DireccionMapa extends React.Component {
     }
 };
 
-DireccionMapa.propTypes = {
+DirecdefaultProps = {
     direccion: PropTypes.string,
     onChangeAddress: PropTypes.func,
     onChangeLocation: PropTypes.func,

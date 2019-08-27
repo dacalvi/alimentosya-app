@@ -1,34 +1,3 @@
-/*
-const styles = StyleSheet.create({
-  botonAevra: {
-    color: 'white',
-    backgroundColor: '#00AAB4', 
-    borderRadius: 30
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 0
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 10,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: -10,
-    marginBottom: 20,
-  }
-  
-});
-*/
-
 import React from 'react';
 import  LogoTitle  from '../components/LogoTitle';
 import { Button } from 'react-native-material-ui';
@@ -38,6 +7,7 @@ import styles from '../constants/Styles';
 import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import FullWidthImage from 'react-native-fullwidth-image';
+import AYCarritoIcono from '../components/AYCarritoIcono';
 
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
@@ -50,14 +20,18 @@ function BotonCategoria(props){
 
 class Buscar extends React.Component {
   
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerStyle: {
-      backgroundColor: '#00AAB4',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerLeft: <Text></Text>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
+  }
 
   state = {
     username: '',

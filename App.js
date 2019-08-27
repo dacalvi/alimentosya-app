@@ -1,6 +1,9 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Icon } from 'expo';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font'
+import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './navigation/AppNavigator';
 import { COLOR, ThemeContext, getTheme } from 'react-native-material-ui';
 import { Provider } from 'react-redux';
@@ -14,10 +17,18 @@ let store;
 
 AsyncStorage.getItem('state', (err, persistedState)=>{
   if(persistedState == null){
-    store = createStore(rootReducer);
+    store = createStore(
+      rootReducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      );
     //console.log('crating empty store');
   }else{
-    store = createStore(rootReducer, JSON.parse(persistedState));
+    
+    store = createStore(
+      rootReducer, 
+      JSON.parse(persistedState),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+      );
     //console.log("loading previous state into store", JSON.parse(persistedState));
   }
 
@@ -29,6 +40,8 @@ AsyncStorage.getItem('state', (err, persistedState)=>{
   }, 1));
 });
 
+
+
 export default class App extends React.Component {
 
   state = {
@@ -36,6 +49,7 @@ export default class App extends React.Component {
   };
 
   render() {
+    console.disableYellowBox = true;
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -66,7 +80,7 @@ export default class App extends React.Component {
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
-        ...Icon.Ionicons.font,
+        
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),

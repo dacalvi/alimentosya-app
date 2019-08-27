@@ -1,142 +1,143 @@
 import React from 'react';
-import  LogoTitle  from '../components/LogoTitle';
-import { Button } from 'react-native-material-ui';
+import LogoTitle  from '../components/LogoTitle';
+import AYBuscador from '../components/AYBuscador';
+import AYCategoriaChip from '../components/AYCategoriaChip';
+import AYProducto from '../components/AYProducto';
+import AYChatButton from '../components/AYChatButton';
+import AYCarritoIcono from '../components/AYCarritoIcono';
+import AYRedCircle from '../components/AYRedCircle';
+import { 
+    Constants, 
+    MapView, 
+    Permissions, 
+    Location 
+} from 'expo';
+import Geocoder from 'react-native-geocoding';
 import {
-	Dimensions,
-	Image,
-	StyleSheet,
-	View,
-	Text,
-    KeyboardAvoidingView,
-    Alert,
-    StatusBar
+    Dimensions,
+    Image, 
+    View, 
+    Text, 
+    ScrollView, 
+    KeyboardAvoidingView, 
+    StyleSheet, 
+    TouchableHighlight,
+    Platform,
+    TextInput
 } from 'react-native';
-import { TextInput, Colors } from 'react-native-paper';
+import styles from '../constants/Styles';
+import layout from '../constants/Layout';
 import { connect } from 'react-redux';
+import RestApi from '../common/RestApi';
+import AYPresentacion from '../components/AYPresentacion';
+import { MAPS_KEY } from '../common/config';
+class OlvideContrasenaCliente extends React.Component {
 
-class OlvideContrasenaCliente extends React.Component { 
-
-
-  btnIngresarClick = () => {
-
-    let promResponse = fetch('http://aevra.96.lt/auth/recoverpasswordclient', {
-      method: 'POST',   
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: this.state.username
-      }),
-    });
-
-    promResponse
-    .then((response) => response.json())
-    .then((responseJson) => {
-      if( responseJson && responseJson.error && responseJson.error == "Unauthorised"){
-        Alert.alert('Usuario o contrasena incorrectas');
-        this.state.password = '';
-        this.inputPassword.focus();
-      }else{
-        this.props.login(responseJson.token);
-        console.log(responseJson);
-        this.props.navigation.navigate('ElegirServicio');
-      }
-    })
-    .catch((error) =>{
-      console.error(error);
-    });
+  constructor(props){
+    super(props);
   }
   
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerStyle: {
-      backgroundColor: '#00AAB4',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
-  };
-
   state = {
-    username: '',
-    password: ''
-  };
+    nombre: null,
+    dni: null,
+    telefono: null,
+    direccion: null,
+    email: null,
+    contrasena: null,
+    errorMessage: null
+    };
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
+  }
 
   render() {
     return (
-        <KeyboardAvoidingView 
-            style={styles.container} 
-            behavior="position" 
-            keyboardVerticalOffset={-StatusBar.currentHeight}
-            enabled>    
-            <Image source={ require('../assets/images/home_header_cliente.png') } style={{ height: imageHeight, width: imageWidth, marginTop: 0}} />
-            
-            <TextInput
-              textContentType='emailAddress'
-              label='Email'
-              mode='flat'
-              value={this.state.username}
-              onChangeText={username => this.setState({ username })}
-              style={{backgroundColor: Colors.white, marginHorizontal: 40,  marginBottom: 20}}
-            />
 
-            <View style={styles.welcomeContainer}>
-            	<Button raised primary text="RECUPERAR CONTRASEÑA" style={styles.botonAevra} onPress={this.btnIngresarClick} />
-              <Text style={{marginTop:20, color: '#777777'}}>Ingrese el email con el que se registro y le enviaremos un enlace para restablecer su contraseña</Text>
-              <Text style={{marginTop:15, color: '#00AAB3'}} onPress={ ()=> this.props.navigation.navigate('LoginCliente') }>Ir a Login</Text>
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.container}>
+            <View style={{flex:1, flexDirection: 'row'}}>
+                <AYTitleIcon text="Olvide mi contraseña" imageIcon={require('../assets/images/icono_patita.png')} />
             </View>
 
-        	<View style={{ height: 50 }} />
-  
-      </KeyboardAvoidingView>
-      
+
+            <View style={{
+              flex:1, 
+              flexDirection: 'row', 
+              marginLeft: 10, 
+              marginBottom: 120,
+              marginTop: 50
+              }}>
+              <View style={{flex:1, flexDirection: 'row', padding: 5}}>
+                  <TextInput
+                      placeholder="Email"    
+                      style={{
+                          width: '95%',
+                          fontSize: 18,
+                          borderBottomWidth: 1,
+                          marginHorizontal: undefined
+                      }}
+                      value={this.state.email}
+                      onChangeText={ email => {
+                          this.setState({email});
+                      }}                           
+                      />
+                  <Text style={{color: 'red', marginLeft: -20,marginTop:7}}>*</Text>
+              </View>
+            </View>
+
+            
+
+            <Image 
+              source={ require('../assets/images/wawis.png') } 
+              style={{ width: imageWidth, marginTop: 0, marginBottom: 10 }} />
+
+            <TouchableHighlight 
+                onPress={()=>{this.props.navigation.navigate("Horarios")}}
+                style={{    
+                    backgroundColor: '#FF0000', 
+                    borderRadius: 10,
+                    padding: 5,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    marginHorizontal: 20,
+                    marginVertical: 10
+                    }}> 
+                <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Enviar</Text>
+            </TouchableHighlight>
+
+            
+          <View style={{ height: 50 }} />
+        </ScrollView>
+        <View><AYChatButton navigation={this.props.navigation} /></View>
+      </View>   	
     );
   }
 }
 
-
 function mapStateToProps(state){
-  return {} 
+  return { } 
 }
 
 function mapDispatchToProps(dispatch){
-  return {
-    login : (token) => dispatch({type: 'LOGIN', payload: token})
-  }
+    return {
+        
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OlvideContrasenaCliente);
 
-
 const dimensions = Dimensions.get('window');
-const imageHeight = dimensions.height / 2.5;
+
+
+const imageHeight = Math.round(dimensions.width * 9 / 16);
 const imageWidth = dimensions.width;
-  
-const styles = StyleSheet.create({
-  botonAevra: {
-    color: 'white',
-    backgroundColor: '#00AAB4', 
-    borderRadius: 30
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    padding: 0
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 10,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: -10,
-    marginBottom: 20,
-  }
-  
-});

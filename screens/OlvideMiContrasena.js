@@ -2,7 +2,7 @@ import React from 'react';
 import  LogoTitle  from '../components/LogoTitle';
 import AYTitleIcon from '../components/AYTitleIcon';
 import AYFacebookLoginButton from '../components/AYFacebookLoginButton';
-import * as Facebook from 'expo-facebook';
+
 import {
 	Dimensions,
 	Image,
@@ -20,38 +20,8 @@ import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
 
 
-class LoginCliente extends React.Component { 
+class OlvideMiContrasena extends React.Component { 
   
-
-  async logIn() {
-
-    
-
-
-    try {
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync('378843599679315', {
-        permissions: ["email", "public_profile"],
-      });
-
-      if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-        
-        console.log(await response.json());
-      } else {
-        // type === 'cancel'
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
-  }
-
   btnIngresarClick(){
     let api = new RestApi();
     api.login({
@@ -59,7 +29,7 @@ class LoginCliente extends React.Component {
       "password": this.state.password
     })
     .then((response)=>{
-      this.props.navigation.navigate('Carrito');
+      this.props.navigation.navigate('ClienteApp');
     })
     .catch((err)=>{
       console.log("ERROR?"+err);
@@ -82,9 +52,6 @@ class LoginCliente extends React.Component {
     headerStyle: {
       backgroundColor: '#FFFFFF',
     },
-    headerRight: <Text />,
-    headerLeft: <Text />,
-
     headerTintColor: '#FF0000',
     headerTitleStyle: {flex: 1, textAlign: 'center'}
   };
@@ -101,11 +68,12 @@ class LoginCliente extends React.Component {
         behavior="position" 
         keyboardVerticalOffset={-StatusBar.currentHeight}
         enabled>                  
+        
+    		
         <AYTitleIcon text="Ingresar a mi cuenta" imageIcon={require('../assets/images/icono_patita.png')} />
-        
-        
-        
-        <AYFacebookLoginButton onPress={()=>{ this.logIn(); }} />
+
+        <AYFacebookLoginButton />
+
 			      <TextInput
               textContentType='emailAddress'
               label='Email'
@@ -119,7 +87,6 @@ class LoginCliente extends React.Component {
               textContentType='password'
               label='Contraseña'
               mode='flat'
-              ref={ref => (this.inputPassword = ref)}
               ref={ref => (this.inputPassword = ref)}
               value={this.state.password}
               onChangeText={password => this.setState({ password })}
@@ -156,10 +123,10 @@ class LoginCliente extends React.Component {
                 justifyContent: 'space-between' 
                 }}>
                 <View>
-                    <Text onPress={()=>{ this.props.navigation.navigate("OlvideContrasenaCliente")}} style={{color: '#777777'}}>Olvidé mi contraseña</Text>
+                  <Text style={{color: '#777777'}}>Olvidé mi contraseña</Text>
                 </View>
                 <View>
-                  <Text onPress={()=>{ this.props.navigation.navigate("RegistroCliente")}} style={{color: '#777777'}}>Registrate!</Text>  
+                  <Text style={{color: '#777777'}}>Registrate!</Text>  
                 </View>  
               </View>
               
@@ -184,7 +151,7 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginCliente);
+export default connect(mapStateToProps, mapDispatchToProps)(OlvideMiContrasena);
 
 
 const dimensions = Dimensions.get('window');

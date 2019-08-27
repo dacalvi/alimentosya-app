@@ -26,19 +26,21 @@ class ProductosPorMarca extends React.Component {
 
   constructor(props){
     super(props);
-    
   }
   
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerRight: <AYCarritoIcono/>,
-    headerStyle: {
-      backgroundColor: '#FFFFFF',
-    },
-    headerTintColor: '#FF0000',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
+  }
 
+  
   state = {
     marca: this.props.navigation.state.params.marca,
     productos: []
@@ -56,33 +58,40 @@ class ProductosPorMarca extends React.Component {
     });
   }
 
+  filtrarPorAnimal(animal){
+    if(animal){
+      productos = this.productosCompletos.filter(producto => producto.type == animal);      
+      console.log("ESTOS SON LOS PRODUCTOS FILTRADOS: ", productos);
+      this.setState({productos});
+    }
+    
+  }
+
   render() {
     return (
-
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
             <AYBuscador navigation={this.props.navigation} />
             
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
-            
-              <View style={{width: '40%', paddingLeft: 10, paddingTop: 5}}>
-                  <AYTituloMarca image={{uri: this.props.navigation.state.params.marca.logo}} titulo="Alimento para perros"/>
-              </View>
-              
-              <View style={{ flex:1, flexDirection: 'row', width: '50%'}}>
-                <AYCategoriaChip 
-                  text="Perros" 
-                  icon={require('../assets/images/icono_perro.png')}
-                  onPress={()=>{ console.log('Perros')}}
-                  />
-                <AYCategoriaChip 
-                  text="Gatos" 
-                  icon={require('../assets/images/icono_gato.png')} 
-                  onPress={()=>{ console.log('Gatos')}}
-                  />
-              </View>
-              
+            <Text style={{marginTop: 10, width: '40%', marginLeft: 20}}></Text>
+            <View style={{ flex:1, flexDirection: 'row', width: '40%'}}>
+              <AYCategoriaChip 
+                text="Perros" 
+                icon={require('../assets/images/icono_perro.png')}
+                onPress={()=>{ 
+                  this.filtrarPorAnimal('Perro');
+                  console.log('Perros')}}
+                />
+              <AYCategoriaChip 
+                text="Gatos" 
+                icon={require('../assets/images/icono_gato.png')} 
+                onPress={()=>{                  
+                  this.filtrarPorAnimal('Gato');
+                  console.log('Gatos')}}
+                />
             </View>
+          </View>
           
           <View style={{width: '100%'}}>
           {this.state.productos.map((producto, i)=>{
@@ -93,7 +102,20 @@ class ProductosPorMarca extends React.Component {
                           marca: this.props.navigation.state.params.marca.name, 
                           producto_nombre: producto.title,
                           presentaciones: producto.presentations}} 
-                      onComprarPressed={(selectedItem, presentacion, cantidad)=>{console.log(selectedItem, presentacion, cantidad)}}
+                      onComprarPressed={(selectedItem, presentacion, cantidad)=>{
+
+                          this.props.addToCart({
+                            cantidad,
+                            id: presentacion.id,
+                            image: presentacion.image,
+                            marca: selectedItem.marca,
+                            producto_nombre: selectedItem.producto_nombre,
+                            weight: presentacion.weight,
+                            price: presentacion.price                            
+                          });
+                          this.props.navigation.navigate('Carrito');
+                        
+                        }}
                       cantidadInicial={1}
                       />
                     );
@@ -102,18 +124,20 @@ class ProductosPorMarca extends React.Component {
 
           <View style={{ height: 150 }} />
         </ScrollView>
-        <View><AYChatButton /></View>
+        <View><AYChatButton navigation={this.props.navigation} /></View>
       </View>   	
     );
   }
 }
 
 function mapStateToProps(state){
-    return {} 
+  const { cart } = state;
+  return { cart } 
 }
 
 function mapDispatchToProps(dispatch){
     return {
+        addToCart: (item) => dispatch({type: 'ADD_TO_CART', payload: item}),
         login : (token) => dispatch({type: 'LOGIN', payload: token})
     }
 }

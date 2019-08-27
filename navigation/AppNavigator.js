@@ -11,6 +11,12 @@ import CategoriasListado from '../screens/CategoriasListado';
 import Buscar from '../screens/Buscar';
 import MarcasListado from '../screens/MarcasListado';
 import ResultadoBusqueda from '../screens/ResultadoBusqueda';
+import Carrito from '../screens/Carrito';
+import Gracias from '../screens/Gracias';
+import MedioDePagoMercadoPago from '../screens/MedioDePagoMercadoPago';
+import SeleccionarMedioPago from '../screens/SeleccionarMedioPago';
+import Horarios from '../screens/Horarios';
+import DatosEnvio from '../screens/DatosEnvio';
 
 
 export default createAppContainer(createSwitchNavigator( {
@@ -23,7 +29,16 @@ export default createAppContainer(createSwitchNavigator( {
     Buscar: Buscar,
     MarcasListado: MarcasListado,
     ProductosPorMarca: ProductosPorMarca,
-    ResultadoBusqueda: ResultadoBusqueda
+    ResultadoBusqueda: ResultadoBusqueda,
+    Gracias: Gracias,
+    Carrito: Carrito,
+    MedioDePagoMercadoPago: MedioDePagoMercadoPago,
+    SeleccionarMedioPago: SeleccionarMedioPago,
+    Horarios: Horarios,
+    DatosEnvio: DatosEnvio,
+    LoginCliente: LoginCliente,
+    RegistroCliente: RegistroCliente,
+    OlvideContrasenaCliente: OlvideContrasenaCliente
     },{initialRouteName: 'Marcas'}),
 
   Auth: createStackNavigator({ 

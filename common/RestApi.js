@@ -7,10 +7,10 @@ export default class RestApi {
   handleErrors(response) {
     console.log(response);
     if (!response.ok) {
-    throw Error(response.statusText);
+        //throw Error(response.statusText);
     }
     return response;
-    }
+  }
 
   post(endpoint, params){
     return new Promise((resolve, reject)=>{
@@ -27,7 +27,7 @@ export default class RestApi {
           })
         );
       }).catch((error)=>{
-        reject(fetch( endpoint , {
+        resolve(fetch( endpoint , {
           method: 'POST',
           headers: headers,
           body: JSON.stringify(params)
@@ -52,8 +52,9 @@ export default class RestApi {
           credentials: 'include'
         }));
 
+        
       }).catch((error)=>{
-        reject(fetch( endpoint , {
+        resolve(fetch( endpoint , {
           method: 'GET',
           headers: headers
         }));
@@ -79,10 +80,79 @@ export default class RestApi {
     });
   }
 
+  shippingtime(){
+    return new Promise((resolve, reject)=>{
+      let api = this.get(API_URL + 'shippingtime');
+      api
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.error){
+          reject(responseJson);
+        }else{
+          resolve(responseJson);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  pagodirecto(params){
+    console.log(params);
+    return new Promise((resolve, reject)=>{
+      let api = this.post( API_URL + 'pago/directo', params);
+      api
+      //.then((response) => response.json())
+      .then((response) => response.text())
+      .then((responseJson) => {
+        console.log(responseJson);
+        responseJson = JSON.parse(responseJson);
+        if(responseJson.error){
+          console.log(responseJson);
+          reject(responseJson);          
+        }else{
+          console.log(responseJson);
+          resolve(responseJson);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error.error);
+      });
+    });
+  }
+
+  pagomercadopago(params){
+    console.log(params);
+    return new Promise((resolve, reject)=>{
+      let api = this.post( API_URL + 'pago/mercadopago', params);
+      api
+      //.then((response) => response.json())
+      .then((response)=>response.text())
+      .then((responseJson) => {
+        console.log(responseJson);
+        responseJson = JSON.parse(responseJson);
+        if(responseJson.error){
+          console.log(responseJson);
+          reject(responseJson);          
+        }else{
+          console.log(responseJson);
+          resolve(responseJson);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error.error);
+      });
+    });
+  }
+
   productos(params){
     return new Promise((resolve, reject)=>{
       let api = this.get(API_URL + 'productos/marca/' + params);
       api
+      .then(this.handleErrors)
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -160,8 +230,11 @@ export default class RestApi {
   registerCliente(params){
     return new Promise((resolve, reject)=>{
       let api = this.post(API_URL + 'register/cliente', params);
-      api.then((response) => response.json())
+      api
+      .then(this.handleErrors)
+      .then((response) => response.json())
       .then((responseJson) => {
+        console.log(params , responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -169,6 +242,7 @@ export default class RestApi {
         }
       })
       .catch((error) => {
+        console.log(params, error);
         reject(error.error);
       });
     });
@@ -179,23 +253,30 @@ export default class RestApi {
     console.log(params);
     return new Promise((resolve, reject) => {
       let api = this.post(API_URL + 'auth/login', params);
-      api.then((response) => response.json())
+      api
+      .then(this.handleErrors)
+      .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
           reject(responseJson);
         }else{
           if(responseJson.token && responseJson.token != ''){
             //Save token to store
-            AsyncStorage.multiSet([['token', responseJson.token],['type', responseJson.type]], ()=> {
+            AsyncStorage.multiSet([
+              ['token', responseJson.token]
+            ], ()=> {
               resolve(responseJson);
             });
+            //this.registerForPushNotificationsAsync();
           }else{
             resolve(responseJson);
           }
         }
       })
       .catch((error) => {
+        console.log(error);
         reject(error.error);
+        //bugsnag.notify(error.error);
       });
     });
   }

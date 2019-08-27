@@ -12,21 +12,26 @@ import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import FullWidthImage from 'react-native-fullwidth-image';
 import RestApi from '../common/RestApi';
+import AYCarritoIcono from '../components/AYCarritoIcono';
 
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
 
 class Marcas extends React.Component {
   
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerStyle: {
-      backgroundColor: '#FFFFFF',
-    },
-    headerRight: <Text></Text>,
-    headerTintColor: '#FF0000',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerLeft: <Text></Text>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
   }
+
 
   todosLosProductos = [];
 
@@ -47,10 +52,9 @@ class Marcas extends React.Component {
 
   componentWillMount(){
     const api = new RestApi();
-    console.log('marcas');
     api.marcas()
     .then((marcas)=>{
-      console.log(marcas)
+      //console.log(marcas)
       this.todosLosProductos = marcas;
       this.setState({marcas});
     })

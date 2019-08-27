@@ -19,7 +19,7 @@ export default class AYTituloMarca extends React.Component{
     render(){
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
-                <Image style={styles.stretch} source={this.props.image}/>
+                <Image resizeMode={'contain'} style={styles.stretch} source={this.props.image}/>
                 <Text style={{ fontSize: 8 }}>{this.props.titulo}</Text>
             </View>
         )

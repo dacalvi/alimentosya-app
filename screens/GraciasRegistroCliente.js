@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { TextInput, Colors } from 'react-native-paper';
 import { connect } from 'react-redux';
-
+import AYCarritoIcono from '../components/AYCarritoIcono';
 
 class GraciasRegistroCliente extends React.Component { 
 
@@ -54,14 +54,18 @@ class GraciasRegistroCliente extends React.Component {
     });
   }
   
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerStyle: {
-      backgroundColor: '#00AAB4',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerLeft: <Text></Text>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
+  }
 
   state = {
     username: '',

@@ -27,6 +27,7 @@ export default class AYBuscador extends React.Component{
                     placeholderTextColor="white" 
                     placeholder="Buscar Alimento"
                     onChangeText={ (searchString)=>{ this.setState({searchString}); }}
+                    value={this.state.searchString}
                     style={{ 
                         color: 'white', 
                         fontWeight: 'bold', 
@@ -35,6 +36,7 @@ export default class AYBuscador extends React.Component{
                     }}/>
                 <TouchableHighlight onPress={() => {
                     if(this.state.searchString !== ''){
+                        this.setState({searchString: ''})
                         this.props.navigation.navigate('ResultadoBusqueda', {q: this.state.searchString})
                     }
                     }}>

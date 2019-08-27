@@ -22,7 +22,7 @@ export default class Postulacion  extends React.Component{
         this.api = new RestApi();
         this.api.cancelarPostulacion(id)
             .then((responseJson)=>{
-            console.log(responseJson);
+            //console.log(responseJson);
             this.props.onCancel();
                 //this.setState({postulaciones : responseJson.data});
             })

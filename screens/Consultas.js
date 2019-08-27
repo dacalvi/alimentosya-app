@@ -8,6 +8,7 @@ import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
 import FullWidthImage from 'react-native-fullwidth-image';
+import AYCarritoIcono from '../components/AYCarritoIcono';
 
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
@@ -19,14 +20,18 @@ function BotonCategoria(props){
 
 class Consultas extends React.Component {
   
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerStyle: {
-      backgroundColor: '#FFFFFF',
-    },
-    headerTintColor: '#FF0000',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerLeft: <Text></Text>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
+  }
   
   btnConsultaClick(){
     if(this.state.name !== '' && this.state.email !== '' && this.state.text !== ''){

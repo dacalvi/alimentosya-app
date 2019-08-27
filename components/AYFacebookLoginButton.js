@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, TouchableHighlight } from 'react-native';
 
 export default class AYFacebookLoginButton extends React.Component{
     
@@ -14,7 +14,9 @@ export default class AYFacebookLoginButton extends React.Component{
     render(){
         return (
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center',  alignContent: 'center', minHeight: 70}}>
-               <Image source={require('../assets/images/fb-login-button.png')} />
+                <TouchableHighlight onPress={() => {this.props.onPress()} }>
+                    <Image source={require('../assets/images/fb-login-button.png')} />
+                </TouchableHighlight>
             </View>
         )
     }

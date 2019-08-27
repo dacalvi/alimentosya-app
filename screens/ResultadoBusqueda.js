@@ -13,9 +13,10 @@ import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import FullWidthImage from 'react-native-fullwidth-image';
 import RestApi from '../common/RestApi';
-
+import AYCarritoIcono from '../components/AYCarritoIcono';
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
+
 
 
 class ResultadoBusqueda extends React.Component {
@@ -24,21 +25,26 @@ class ResultadoBusqueda extends React.Component {
     super(props);
   }
   
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerStyle: {
-      backgroundColor: '#FFFFFF',
-    },
-    headerTintColor: '#FF0000',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
-  };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerLeft: <Text></Text>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
+  }
 
   state = {
     marca: this.props.navigation.state.params.marca,
     productos: []
   };
 
-  componentWillMount(){    
+  componentWillMount(){
+    console.log(this.props.navigation.state.params); 
     const api = new RestApi();
     api.buscar( this.props.navigation.state.params )
     .then((productos)=>{
@@ -77,7 +83,12 @@ class ResultadoBusqueda extends React.Component {
               </View>
               
             </View>
-          
+            <Text style={{ 
+              fontSize: 14, 
+              fontWeight: 'bold',
+              marginLeft: 10,
+              marginTop: 10
+              }}>Resultados de búsqueda para {this.props.navigation.state.params.q}</Text>
           <View style={{width: '100%'}}>
           {this.state.productos.map((producto, i)=>{
                     return (                     
@@ -87,7 +98,24 @@ class ResultadoBusqueda extends React.Component {
                           marca: producto.brand_name, 
                           producto_nombre: producto.title,
                           presentaciones: producto.presentations}} 
-                      onComprarPressed={(selectedItem, presentacion, cantidad)=>{console.log(selectedItem, presentacion, cantidad)}}
+                          onComprarPressed={(selectedItem, presentacion, cantidad)=>{
+
+                            this.props.addToCart({
+                              cantidad,
+                              id: presentacion.id,
+                              image: presentacion.image,
+                              marca: selectedItem.marca,
+                              producto_nombre: selectedItem.producto_nombre,
+                              weight: presentacion.weight,
+                              price: presentacion.price                            
+                            });
+
+                            //Si estoy logueado ir al carrito
+                            this.props.navigation.navigate('Carrito');
+                            //Sino, ir a login
+                            //console.log(selectedItem, presentacion, cantidad)
+
+                            }}
                       cantidadInicial={1}
                       />
                     );
@@ -96,7 +124,7 @@ class ResultadoBusqueda extends React.Component {
 
           <View style={{ height: 150 }} />
         </ScrollView>
-        <View><AYChatButton /></View>
+        <View><AYChatButton navigation={this.props.navigation} /></View>
       </View>   	
     );
   }
@@ -108,6 +136,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
+        addToCart: (item) => dispatch({type: 'ADD_TO_CART', payload: item}),
         login : (token) => dispatch({type: 'LOGIN', payload: token})
     }
 }
