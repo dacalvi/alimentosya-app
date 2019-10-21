@@ -47,22 +47,8 @@ class MarcasListado extends React.Component {
     return (
     	<ScrollView style={styles.container}>
             <Image style={{ flex:1, width: null, height: 60 }} resizeMode='cover' source={require('../assets/images/seleccione_servicio.png')} />
-            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                
-             
-
-
-
-            </View>
-            
-
-                            
-			    
-        
-            
+            <View style={{flexDirection: 'row', flexWrap: 'wrap'}}></View>
             <View style={{ height: 150 }} />
-  
-
       </ScrollView>
       
     );

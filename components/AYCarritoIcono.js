@@ -18,10 +18,9 @@ class AYCarritoIcono extends React.Component{
         super(props);
     }
 
-    componentWillMount(){    
+    componentWillMount(){ 
         this.setState({cantidadItems: this.props.cart.cart.length});
     }
-
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         
@@ -38,25 +37,32 @@ class AYCarritoIcono extends React.Component{
 
     render(){
         return (
-            <View style={{marginRight:10}}>
-               <Image 
-                style={{
-                    width: 25,
-                    height: 25
-                }}
-                source={require('../assets/images/carrito.png')}/>
-                <View style={{ 
-                    left: 15,
-                    top: -10,
-                    backgroundColor: 'black', 
-                    position: 'absolute', 
-                    borderRadius: 10, 
-                    paddingLeft: 5, 
-                    paddingRight: 5
-                    }}>
-                <Text style={{color: 'white'}}>{this.props.cantidad}</Text>
+            <TouchableHighlight onPress={ ()=>{this.props.navigation.navigate("Carrito")} }>
+                <View style={{marginRight:10}}>
+                <Image 
+                    style={{
+                        width: 25,
+                        height: 25
+                    }}
+                    source={require('../assets/images/carrito.png')}/>
+                    <View style={{ 
+                        left: 15,
+                        top: -10,
+                        backgroundColor: 'black', 
+                        position: 'absolute', 
+                        borderRadius: 10, 
+                        paddingLeft: 5, 
+                        paddingRight: 5
+                        }}>
+                        {
+                            this.state.cantidadItems > 0 ? 
+                            <Text style={{color: 'white', fontSize: 11}}>{this.state.cantidadItems}</Text>:undefined
+                        }   
+                    
+                    </View>
                 </View>
-            </View>
+
+            </TouchableHighlight>
         )
     }
 };

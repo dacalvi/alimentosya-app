@@ -6,12 +6,7 @@ import AYProducto from '../components/AYProducto';
 import AYChatButton from '../components/AYChatButton';
 import AYCarritoIcono from '../components/AYCarritoIcono';
 import AYRedCircle from '../components/AYRedCircle';
-import { 
-    Constants
-} from 'expo';
 import MapView from 'react-native-maps';
-import * as Permissions from 'expo-permissions';
-import * as Location from 'expo-location';
 import Geocoder from 'react-native-geocoding';
 import { 
     View, 
@@ -19,7 +14,8 @@ import {
     ScrollView, 
     TouchableHighlight,
     TextInput,
-    Alert
+    Alert,
+    Platform
 } from 'react-native';
 import styles from '../constants/Styles';
 import layout from '../constants/Layout';
@@ -34,8 +30,7 @@ class DatosEnvio extends React.Component {
 
   constructor(props){
     super(props);
-        Geocoder.init(MAPS_KEY); // use a valid API key
-        this._getLocationAsync();
+        
   }
   
   state = {
@@ -73,36 +68,40 @@ class DatosEnvio extends React.Component {
             this.setState({mapVisible: false});
             return false;
         }else{
-            console.log("showing map");
-            this.setState({mapVisible: true});
+            try {
+                Geocoder.init(MAPS_KEY);
+                Geocoder.from(this.state.calle + ' ' + this.state.numero + ', Mar del Plata; Argentina')
+                .then(json => {
+                    var location = json.results[0].geometry.location;
+                    this.setState({ latitude: location.lat, longitude: location.lng });
+                    if(this.distance(location.lat, location.lng, -38.00963,-57.40543) < 17059.05){
+                        console.log("showing map");
+                        this.setState({mapVisible: true});
+                        Alert.alert("Genial!", "Estas en la zona de envio");
+                        this.setState({continuarVisible: true});
+                    }else{
+                        Alert.alert("Zona no disponible", "No estas en la zona de envio");
+                    }
+    
+                })
+                .catch((error)=> {
+                    if(error.code == 4){
+                        Alert.alert("Donde?", "No se encontaron resultados para esa ubicación");
+                    }else{
+                        error => console.warn(error)
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+                alert(error.name);
+            }
         }
         
-        Geocoder.from(this.state.calle + ' ' + this.state.numero + ', Ciudad Autonoma de Buenos Aires; Argentina')
-        .then(json => {
-            var location = json.results[0].geometry.location;
-            this.setState({ latitude: location.lat, longitude: location.lng });
-        })
-        .catch((error)=> {
-            if(error.code == 4){
-                Alert.alert("Donde?", "No se encontaron resultados para esa ubicación");
-            }else{
-                error => console.warn(error)
-            }
-        });
+        
+        
     }
 
-    _getLocationAsync = async () => {
-        Location.requestPermissionsAsync();
-        let { status } = await Permissions.getAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            this.setState({
-            errorMessage: 'Permission to access location was denied',
-            });
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        this.setState({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-    };
+    
 
     saveShipmentData(){
         if(this.state.calle !== '' && this.state.numero !== ''){
@@ -115,6 +114,24 @@ class DatosEnvio extends React.Component {
     }
 
     
+
+    componentDidMount(){
+        Alert.alert("Aviso", "El servicio se encuentra habilitado para la ciudad de Mar del Plata, Argentina por el momento. Ingrese su direccion para verificar disponibilidad de entrega");
+    }
+
+    distance(lat1,lon1,lat2,lon2) {
+        var R = 6371; // km (change this constant to get miles)
+        var dLat = (lat2-lat1) * Math.PI / 180;
+        var dLon = (lon2-lon1) * Math.PI / 180;
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) *
+            Math.sin(dLon/2) * Math.sin(dLon/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        
+        return d*1000;
+    }
+
 
   render() {
     const { mapVisible } = this.state;  
@@ -152,7 +169,9 @@ class DatosEnvio extends React.Component {
                             onChangeText={ calle => {
                                 this.setState({calle});
                             }}
-                            onBlur={()=> this._attemptGeocode()}
+                            onBlur={()=>{
+                                this._attemptGeocode();
+                            }}
                             />
                         <Text style={{color: 'red', marginLeft: -20,marginTop:7}}>*</Text>
                     </View>
@@ -169,7 +188,9 @@ class DatosEnvio extends React.Component {
                             onChangeText={ numero => {
                                 this.setState({numero});
                             }}
-                            onBlur={()=> this._attemptGeocode()}
+                            onBlur={()=>{
+                                this._attemptGeocode();
+                            }}
                             />
                         <Text style={{color: 'red', marginLeft: -5,marginTop:7}}>*</Text>
                     </View>
@@ -205,6 +226,7 @@ class DatosEnvio extends React.Component {
                             onChangeText={ piso => {
                                 this.setState({piso});
                             }}
+                            
                             />
                         
                     </View>

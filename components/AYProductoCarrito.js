@@ -90,7 +90,8 @@ class AYProductoCarrito extends React.Component{
                     justifyContent: 'center'
                     }}>
                     <TouchableHighlight 
-                        onPress={()=>{ 
+                        onPress={()=>{
+                            console.log(this.props.index);
                             this.props.delete_item(this.props.index);
                             this.props.onDelete();
                             }}

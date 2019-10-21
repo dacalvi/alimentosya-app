@@ -34,6 +34,7 @@ import AYPresentacion from '../components/AYPresentacion';
 import { MAPS_KEY } from '../common/config';
 import validate from '../constants/validate_wrapper';
 import { Snackbar  } from 'react-native-material-ui';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class RegistroCliente extends React.Component {
 
@@ -114,7 +115,9 @@ class RegistroCliente extends React.Component {
       api.registerCliente(registrationData)
       .then((result)=>{
         
-
+        Alert.alert("Validacion", "Revisa tu cuenta de email para validar tu registro");
+        this.props.navigation.navigate('LoginCliente');
+        /*
         api.login({
           "username": this.state.email,
           "password": this.state.contrasena
@@ -137,7 +140,7 @@ class RegistroCliente extends React.Component {
             }
           }
         });
-
+        */
 
 
 
@@ -344,9 +347,10 @@ class RegistroCliente extends React.Component {
             </TouchableHighlight>
             <Snackbar visible={this.state.isVisible} message={this.state.errorMsg} onRequestClose={() => this.setState({ isVisible: false })} />        
             
-          <View style={{ height: 50 }} />
+          
         </ScrollView>
         <View><AYChatButton navigation={this.props.navigation} /></View>
+          {Platform.OS === 'android' ? <KeyboardSpacer /> : null }
       </View>   	
     );
   }

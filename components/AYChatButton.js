@@ -6,7 +6,6 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-
 const styles = StyleSheet.create({
     stretch: {
       width: 50,
@@ -16,9 +15,7 @@ const styles = StyleSheet.create({
 
 export default class AYChatButton extends React.Component{
     
-    state = {
-
-    }
+    state = {}
 
     constructor(props){
         super(props);
@@ -34,4 +31,3 @@ export default class AYChatButton extends React.Component{
         )
     }
 };
-

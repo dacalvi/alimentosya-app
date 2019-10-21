@@ -14,7 +14,12 @@ export default class AYPresentaciones extends React.Component{
 
     render(){
         return (
-            <View style={{ flex: 1, flexDirection: 'row'}}>
+            <View style={{ 
+                    flex: 1, 
+                    flexDirection: 'row', 
+                    flexWrap: 'wrap'
+                    
+                    }}>
                 {this.props.presentaciones.map((presentacion, i)=>{
                     return (
                     <AYPresentacion 

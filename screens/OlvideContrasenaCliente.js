@@ -23,7 +23,8 @@ import {
     StyleSheet, 
     TouchableHighlight,
     Platform,
-    TextInput
+    TextInput,
+    Alert
 } from 'react-native';
 import styles from '../constants/Styles';
 import layout from '../constants/Layout';
@@ -31,21 +32,20 @@ import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
 import AYPresentacion from '../components/AYPresentacion';
 import { MAPS_KEY } from '../common/config';
+import validate from '../constants/validate_wrapper';
+
+
 class OlvideContrasenaCliente extends React.Component {
 
   constructor(props){
     super(props);
+    this.state = {
+      email: '',            
+      emailError: '',
+      buttonRecuperarDisabled: false,
+      buttonRecuperarText: 'RECUPERAR CONTRASEÑA'
+    }
   }
-  
-  state = {
-    nombre: null,
-    dni: null,
-    telefono: null,
-    direccion: null,
-    email: null,
-    contrasena: null,
-    errorMessage: null
-    };
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -58,6 +58,41 @@ class OlvideContrasenaCliente extends React.Component {
       headerTitleStyle: {flex: 1, textAlign: 'center'}
     }
   }
+
+
+  btnRecuperarClick = () => {
+    const emailError = validate('email', this.state.email);
+    this.setState({emailError});
+
+    if(!emailError){
+      this.setState({
+        buttonRecuperarDisabled: true,
+        buttonRecuperarText: "ENVIANDO..."
+      });
+      let api = new RestApi();
+      api.olvideContrasenaCliente({'username': this.state.email })
+      .then((responseJson) => {
+        
+        Alert.alert('Listo!', responseJson);
+        this.setState({
+          buttonRecuperarDisabled: true,
+          buttonRecuperarText: "ENVIADO" 
+        });
+        this.props.navigation.navigate('LoginCliente');
+      })
+      .catch((error)=>{
+        Alert.alert('Error!', error);
+        console.log(error);
+        this.setState({
+          buttonRecuperarDisabled: false,
+          buttonRecuperarText: "RECUPERAR CONTRASEÑA"
+        });
+      })
+      
+    }
+
+  }
+
 
   render() {
     return (
@@ -73,7 +108,7 @@ class OlvideContrasenaCliente extends React.Component {
               flex:1, 
               flexDirection: 'row', 
               marginLeft: 10, 
-              marginBottom: 120,
+              marginBottom: 0,
               marginTop: 50
               }}>
               <View style={{flex:1, flexDirection: 'row', padding: 5}}>
@@ -92,6 +127,10 @@ class OlvideContrasenaCliente extends React.Component {
                       />
                   <Text style={{color: 'red', marginLeft: -20,marginTop:7}}>*</Text>
               </View>
+              
+            </View>
+            <View style={{ marginHorizontal: 15, marginBottom: 10}}>
+              { this.state.emailError ? <Text style={{color: 'red'}}>{this.state.emailError}</Text> : <Text> </Text> }
             </View>
 
             
@@ -100,8 +139,11 @@ class OlvideContrasenaCliente extends React.Component {
               source={ require('../assets/images/wawis.png') } 
               style={{ width: imageWidth, marginTop: 0, marginBottom: 10 }} />
 
-            <TouchableHighlight 
-                onPress={()=>{this.props.navigation.navigate("Horarios")}}
+            <TouchableHighlight
+                disabled={this.state.buttonRecuperarDisabled}
+                onPress={()=>{
+                  this.btnRecuperarClick();
+                  }}
                 style={{    
                     backgroundColor: '#FF0000', 
                     borderRadius: 10,
@@ -112,7 +154,9 @@ class OlvideContrasenaCliente extends React.Component {
                     marginHorizontal: 20,
                     marginVertical: 10
                     }}> 
-                <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Enviar</Text>
+                <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>
+                {this.state.buttonRecuperarText}
+                </Text>
             </TouchableHighlight>
 
             
@@ -125,13 +169,13 @@ class OlvideContrasenaCliente extends React.Component {
 }
 
 function mapStateToProps(state){
-  return { } 
+  return {
+      cart: state.cart
+  }
 }
 
 function mapDispatchToProps(dispatch){
-    return {
-        
-    }
+    return { }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OlvideContrasenaCliente);

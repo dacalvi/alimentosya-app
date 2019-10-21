@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text } from 'react-native'
+import { Image, View, Text, TouchableHighlight } from 'react-native'
 import AYCarritoIcono from '../components/AYCarritoIcono';
 class LogoTitle extends React.Component {
     render() {
@@ -24,7 +24,7 @@ class LogoTitle extends React.Component {
               height: undefined }}
           />
 
-        </View>
+        </TouchableHighlight>
       );
     }
   }

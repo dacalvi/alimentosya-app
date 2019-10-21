@@ -8,7 +8,8 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "scheme": "alimentosya",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -25,6 +26,15 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": ""
+    "description": "",
+    "android": {
+      "package": "ar.com.movapps.alimentoya4",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDNamdh-kHIhCoBVVma2RUwM__4G0Co9Eg"
+        }
+      }
+    }
   }
 }

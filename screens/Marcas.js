@@ -18,18 +18,19 @@ const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
 
 class Marcas extends React.Component {
-  
-  static navigationOptions = {
-    headerTitle: <LogoTitle />,
-    headerStyle: {
-      backgroundColor: '#FFFFFF',
-    },
-    headerRight: <AYCarritoIcono/> ,
-    headerLeft: <Text></Text> ,
-    headerTintColor: '#FF0000',
-    headerTitleStyle: {flex: 1, textAlign: 'center'}
-  }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: <LogoTitle navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerLeft: <Text></Text>,
+      headerTintColor: '#FF0000',
+      headerTitleStyle: {flex: 1, textAlign: 'center'}
+    }
+  }
 
   todosLosProductos = [];
 
@@ -67,8 +68,11 @@ class Marcas extends React.Component {
         <ScrollView style={styles.container}>
           <AYBuscador navigation={this.props.navigation} />
           
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Image style={{ flex:1, width: null, height: 170 }} resizeMode='cover' source={require('../assets/images/envio_gratis.png')} />
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', backgroundColor: 'red'}}>
+            <Image 
+            style={{ flex:1, width: '100%', height: 150 }} 
+            resizeMode='contain' 
+            source={require('../assets/images/envio_gratis.png')} />
           </View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >

@@ -12,6 +12,37 @@ import rootReducer from './reducers';
 import { LocalStore } from './common/localstore';
 import throttle from 'lodash.throttle';
 import { AsyncStorage } from 'react-native';
+import {setJSExceptionHandler, setNativeExceptionHandler} from 'react-native-exception-handler';
+
+
+const errorHandler = (e, isFatal) => {
+  if (isFatal) {
+    Alert.alert(
+        'Unexpected error occurred',
+        `
+        Error: ${(isFatal) ? 'Fatal:' : ''} ${e.name} ${e.message}
+
+        We will need to restart the app.
+        `,
+      [{
+        text: 'Restart',
+        onPress: () => {
+          RNRestart.Restart();
+        }
+      }]
+    );
+  } else {
+    console.log(e); // So that we can see it in the ADB logs in case of Android if needed
+  }
+};
+
+setJSExceptionHandler(errorHandler);
+
+
+
+
+
+
 
 let store;
 
@@ -49,7 +80,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    console.disableYellowBox = true;
+    //console.disableYellowBox = true;
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading

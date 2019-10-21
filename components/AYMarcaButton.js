@@ -16,9 +16,9 @@ const AYMarcaButton = (props) => {
                 borderColor: '#EEEEEE', 
                 borderWidth: 10, 
                 margin: 10,
-                marginHorizontal:10,
+                marginHorizontal:'5%',
                 borderRadius: 25, 
-                
+                width: '40%',
                 alignItems: 'center',
                 padding: 20
                 

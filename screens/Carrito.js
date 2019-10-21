@@ -82,6 +82,11 @@ class Carrito extends React.Component {
     this.setState({total});
   }
 
+  clearCart(){
+    this.props.clearCart();
+    this.props.navigation.navigate("Marcas");
+  }
+
   render() {
     return (
 
@@ -96,12 +101,11 @@ class Carrito extends React.Component {
                         key={i}
                         index={i}
                         producto={producto}
-                        onDelete={()=>{
+                        onDelete={(index)=>{
                           this.setState({cart: this.props.cart}, ()=>{this.updateTotal()});
                           }}
                         onChange={()=>{ 
                           this.updateTotal();
-                          
                         }}
                         />
                         );
@@ -138,6 +142,24 @@ class Carrito extends React.Component {
                     <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Comprar productos</Text>
             </TouchableHighlight>
 
+
+            <TouchableHighlight 
+                onPress={()=>{
+                  this.clearCart();
+                }}
+                style={{    
+                    backgroundColor: '#CCCCCC', 
+                    borderRadius: 10,
+                    padding: 5,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    marginHorizontal: 20,
+                    marginVertical: 10
+                    }}> 
+                    <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Limpiar Carrito</Text>
+            </TouchableHighlight>
+
           <View style={{ height: 150 }} />
         </ScrollView>
         <View><AYChatButton navigation={this.props.navigation} /></View>
@@ -153,6 +175,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
+        clearCart : () => dispatch({type: 'CLEAR_CART'}),
         login : (token) => dispatch({type: 'LOGIN', payload: token})
     }
 }

@@ -37,6 +37,7 @@ const cart = (state = initialState, action) => {
 
         case 'DELETE_ITEM':
             let cartToDeleteItem = state.cart;
+            console.log(action.payload.id, cartToDeleteItem);
             for (let index = 0; index < cartToDeleteItem.length; index++) {
                 const item = cartToDeleteItem[index];
                 if(typeof item.id !== 'undefined'){

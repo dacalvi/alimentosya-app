@@ -21,7 +21,7 @@ export default class AYStepper extends React.Component{
 
     increase(){
         if(this.state.value < this.props.max){
-            this.setState({value: this.state.value+1}, ()=>{this.props.onChange(this.state.value)});
+            this.setState({value: +this.state.value+1}, ()=>{this.props.onChange(this.state.value)});
         }
     }
 

@@ -13,12 +13,15 @@ export default class AYPresentacion extends React.Component{
 
     render(){
         return (
-            <View style={{ flex: 1 }}>
+            
                 <TouchableOpacity 
                     style={{ 
                         marginRight: 5,
-                        padding: 5,
+                        paddingHorizontal: 10,
+                        paddingVertical: 5,
+                        marginBottom: 5,
                         borderRadius: 3,
+                        wrap: 'wrap',
                         backgroundColor:  this.props.seleccionado == true ? '#FF7F00': '#A3A3A3'  
                     }}
                     onPress={ 
@@ -28,7 +31,7 @@ export default class AYPresentacion extends React.Component{
                     >
                     <Text style={{color: 'white', fontWeight: 'bold'}}>{this.props.presentacion.weight}</Text>
                 </TouchableOpacity>
-            </View>
+            
         )
     }
 };
