@@ -1,21 +1,13 @@
 import React from 'react';
-import  LogoTitle  from '../components/LogoTitle';
-import AYBuscador from '../components/AYBuscador';
-import AYCategoriaChip from '../components/AYCategoriaChip';
-import AYProductoCarrito from '../components/AYProductoCarrito';
-import AYChatButton from '../components/AYChatButton';
-import AYTituloMarca from '../components/AYTituloMarca';
-import AYCarritoIcono from '../components/AYCarritoIcono';
-
-import { Button } from 'react-native-material-ui';
-import { Image, View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, TouchableHighlight } from 'react-native';
-import { TextInput, Colors } from 'react-native-paper';
-import styles from '../constants/Styles';
-import layout from '../constants/Layout';
+import { ScrollView, Text, TouchableHighlight, View } from 'react-native';
 import { connect } from 'react-redux';
-import FullWidthImage from 'react-native-fullwidth-image';
-import RestApi from '../common/RestApi';
 import { isSignedIn } from '../common/auth';
+import AYChatButton from '../components/AYChatButton';
+import AYProductoCarrito from '../components/AYProductoCarrito';
+import LogoTitle from '../components/LogoTitle';
+import layout from '../constants/Layout';
+import styles from '../constants/Styles';
+
 
 
 const imageHeight = layout.window.height / 2.5;
@@ -28,10 +20,13 @@ class Carrito extends React.Component {
 
   constructor(props){
     super(props);
+    
     this.state = {
-      cart: [],
+      cart: props.cart,
       total: 0
     };
+    
+    
   }
   
   static navigationOptions = ({ navigation }) => {
@@ -48,10 +43,13 @@ class Carrito extends React.Component {
   }
 
   
+  componentDidMount(){
+    this.load();
+    this.updateTotal();
+    this.props.navigation.addListener('willFocus', this.load)
+  }
 
-  componentWillMount(){
-
-
+  load = () => {
     isSignedIn()
     .then(()=>{ 
       
@@ -63,8 +61,11 @@ class Carrito extends React.Component {
     .catch(()=>{ 
       this.props.navigation.navigate('LoginCliente') 
     });
+  }
 
 
+  componentWillMount(){
+    this.load();
   }
 
   onDeleteItem(){
@@ -91,6 +92,7 @@ class Carrito extends React.Component {
     return (
 
       <View style={{flex: 1}}>
+      
         <ScrollView style={styles.container}>
             <AYTitleIcon text="Mi Carrito" imageIcon={require('../assets/images/icono_patita.png')} />
           

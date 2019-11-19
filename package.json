@@ -17,12 +17,13 @@
     "expo": "^34.0.1",
     "expo-asset": "^6.0.0",
     "expo-cli": "^3.0.10",
-    "expo-constants": "^6.0.0",
+    "expo-constants": "^7.0.1",
     "expo-facebook": "^6.0.0",
     "expo-font": "^6.0.1",
     "expo-keep-awake": "^6.0.0",
     "expo-location": "^6.0.0",
     "expo-permissions": "^6.0.0",
+    "expo-web-browser": "^6.0.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "react": "16.5.1",
@@ -33,7 +34,7 @@
     "react-native-fbsdk": "^0.8.0",
     "react-native-fullwidth-image": "^0.1.3",
     "react-native-geocoding": "^0.3.0",
-    "react-native-gesture-handler": "^1.3.0",
+    "react-native-gesture-handler": "~1.3.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-maps": "^0.24.2",
@@ -50,7 +51,7 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^5.2.0",
-    "jest-expo": "^32.0.1",
+    "jest-expo": "^35.0.0",
     "react-devtools": "^3.6.3"
   },
   "private": true

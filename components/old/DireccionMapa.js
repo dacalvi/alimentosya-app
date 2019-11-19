@@ -7,7 +7,7 @@ import { ErrorRecovery } from 'expo';
 import Geocoder from 'react-native-geocoding';
 import { Avatar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { MAPS_KEY } from '../common/config';
+import Config from "react-native-config";
 
 
 export default class DireccionMapa extends React.Component {
@@ -28,7 +28,7 @@ export default class DireccionMapa extends React.Component {
             });
             console.log('Oops, this will not work on Sketch in an Android emulator. Try it on your device!');
           } else {
-            Geocoder.init(MAPS_KEY); // use a valid API key
+            Geocoder.init(Config.MAPS_KEY); // use a valid API key
             this._getLocationAsync();
           }
     }

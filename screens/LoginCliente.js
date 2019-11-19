@@ -1,33 +1,17 @@
-import React from 'react';
-import  LogoTitle  from '../components/LogoTitle';
-import AYTitleIcon from '../components/AYTitleIcon';
-import AYFacebookLoginButton from '../components/AYFacebookLoginButton';
+import Constants from "expo-constants";
 import * as Facebook from 'expo-facebook';
-import {
-	Dimensions,
-	Image,
-	StyleSheet,
-	View,
-	Text,
-  KeyboardAvoidingView,
-  Alert,
-  StatusBar,
-  Button,
-  TouchableHighlight
-} from 'react-native';
-import { TextInput, Colors } from 'react-native-paper';
+import React from 'react';
+import { Alert, Dimensions, Image, KeyboardAvoidingView, StatusBar, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Colors, TextInput } from 'react-native-paper';
 import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
-
+import AYFacebookLoginButton from '../components/AYFacebookLoginButton';
+import AYTitleIcon from '../components/AYTitleIcon';
+import LogoTitle from '../components/LogoTitle';
 
 class LoginCliente extends React.Component { 
-  
 
   async logIn() {
-
-    
-
-
     try {
       const {
         type,
@@ -35,11 +19,41 @@ class LoginCliente extends React.Component {
         expires,
         permissions,
         declinedPermissions,
-      } = await Facebook.logInWithReadPermissionsAsync('378843599679315', {
+      } = await Facebook.logInWithReadPermissionsAsync( Constants.manifest.extra.FB_APP_ID, {
         permissions: ["email", "public_profile"],
       });
 
       if (type === 'success') {
+        
+
+        console.log("TOKEEEEEN DEL LADO JS", token);
+
+
+        let api = new RestApi();
+        api.loginWithFacebookToken(token)
+        .then((response)=>{
+          if(typeof response.redirect !== 'undefined' && response.redirect !== ''){
+            this.props.navigation.navigate(response.redirect);  
+          }else{
+            this.props.navigation.navigate('Carrito');
+          }
+        })
+        .catch((err)=>{
+          console.log("ERROR?",err);
+          if(err && err.error){
+            if(err.error == "Pending"){
+              alert("Su cuenta se encuentra en proceso de revision, recibira un email con el resultado del proceso muy pronto");
+            }else if(err.error == "Unauthorized"){
+              Alert.alert('Usuario o contrasena incorrectas');
+              this.state.password = '';
+              this.inputPassword.focus();
+            }else{
+              alert(err.error);
+            }
+          }
+        });
+        
+
         // Get the user's name using Facebook's Graph API
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
         
@@ -47,7 +61,8 @@ class LoginCliente extends React.Component {
       } else {
         // type === 'cancel'
       }
-    } catch ({ message }) {
+    } catch ({ message }) 
+    {
       alert(`Facebook Login Error: ${message}`);
     }
   }

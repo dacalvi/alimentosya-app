@@ -29,6 +29,8 @@ class Horarios extends React.Component {
     super(props);
   }
   
+  loading = false;
+
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: <LogoTitle navigation={navigation}/>,
@@ -47,13 +49,17 @@ class Horarios extends React.Component {
   }
 
   componentWillMount(){
+    this.setState({loading:true});
     const api = new RestApi();
     api.shippingtime()
     .then((horarios)=>{
+      console.log(horarios);
       this.setState({horarios});
+      this.setState({loading:false});
     })
     .catch((err)=>{
       console.log(err);
+      this.setState({loading:false});
     });
   }
 
@@ -92,7 +98,11 @@ class Horarios extends React.Component {
                 
                 marginHorizontal: 30,
             }}>
-            
+            { 
+                  this.state.loading? 
+                  <Text>Buscando horarios de entrega...</Text>:
+                  undefined
+                }
             <AYTimeSlots 
                 slots={this.state.horarios} 
                 onChange={(selectedSlots)=>{

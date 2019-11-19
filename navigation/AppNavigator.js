@@ -17,6 +17,7 @@ import MedioDePagoMercadoPago from '../screens/MedioDePagoMercadoPago';
 import SeleccionarMedioPago from '../screens/SeleccionarMedioPago';
 import Horarios from '../screens/Horarios';
 import DatosEnvio from '../screens/DatosEnvio';
+import Getphone from '../screens/Getphone';
 
 
 export default createAppContainer(createSwitchNavigator( {
@@ -38,7 +39,9 @@ export default createAppContainer(createSwitchNavigator( {
     DatosEnvio: DatosEnvio,
     LoginCliente: LoginCliente,
     RegistroCliente: RegistroCliente,
-    OlvideContrasenaCliente: OlvideContrasenaCliente
+    OlvideContrasenaCliente: OlvideContrasenaCliente,
+    Getphone: Getphone
+    
     },{initialRouteName: 'Marcas'}),
 
   Auth: createStackNavigator({ 

@@ -28,6 +28,8 @@ class ProductosPorMarca extends React.Component {
     super(props);
   }
   
+  loading = false;
+
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: <LogoTitle navigation={navigation}/>,
@@ -46,15 +48,18 @@ class ProductosPorMarca extends React.Component {
     productos: []
   };
 
-  componentWillMount(){    
+  componentWillMount(){
+    this.setState({loading:true});    
     const api = new RestApi();
     api.productos( this.props.navigation.state.params.marca.id )
     .then((productos)=>{
       this.productosCompletos = productos;
       this.setState({productos});
+      this.setState({loading:false});
     })
     .catch((err)=>{
       console.log(err);
+      this.setState({loading:false});
     });
   }
 
@@ -74,26 +79,44 @@ class ProductosPorMarca extends React.Component {
             <AYBuscador navigation={this.props.navigation} />
             
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}} >
-            <Text style={{marginTop: 10, width: '40%', marginLeft: 20}}></Text>
-            <View style={{ flex:1, flexDirection: 'row', width: '40%'}}>
-              <AYCategoriaChip 
-                text="Perros" 
-                icon={require('../assets/images/icono_perro.png')}
-                onPress={()=>{ 
-                  this.filtrarPorAnimal('Perro');
-                  console.log('Perros')}}
-                />
-              <AYCategoriaChip 
-                text="Gatos" 
-                icon={require('../assets/images/icono_gato.png')} 
-                onPress={()=>{                  
-                  this.filtrarPorAnimal('Gato');
-                  console.log('Gatos')}}
-                />
+              
+              
+
+
+
+              <Image style={{
+                marginTop: 10, 
+                width: '45%', 
+                marginLeft: -10,
+                height: 30
+              }} source={{uri: this.props.navigation.state.params.marca.logo}} resizeMode={'contain'}/>
+
+
+
+              <View style={{ flex:1, flexDirection: 'row', width: '40%'}}>
+                <AYCategoriaChip 
+                  text="Perros" 
+                  icon={require('../assets/images/icono_perro.png')}
+                  onPress={()=>{ 
+                    this.filtrarPorAnimal('Perro');
+                    console.log('Perros')}}
+                  />
+                <AYCategoriaChip 
+                  text="Gatos" 
+                  icon={require('../assets/images/icono_gato.png')} 
+                  onPress={()=>{                  
+                    this.filtrarPorAnimal('Gato');
+                    console.log('Gatos')}}
+                  />
+              </View>
             </View>
-          </View>
           
           <View style={{width: '100%'}}>
+          { 
+            this.state.loading? 
+            <Text>Cargando...</Text>:
+            undefined
+          }
           {this.state.productos.map((producto, i)=>{
                     return (                     
                       <AYProducto 

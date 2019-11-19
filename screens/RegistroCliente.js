@@ -1,40 +1,14 @@
 import React from 'react';
-import LogoTitle  from '../components/LogoTitle';
-import AYBuscador from '../components/AYBuscador';
-import AYCategoriaChip from '../components/AYCategoriaChip';
-import AYProducto from '../components/AYProducto';
-import AYChatButton from '../components/AYChatButton';
-import AYCarritoIcono from '../components/AYCarritoIcono';
-import AYRedCircle from '../components/AYRedCircle';
-import { 
-    Constants, 
-    MapView, 
-    Permissions, 
-    Location 
-} from 'expo';
-import Geocoder from 'react-native-geocoding';
-import {
-    Dimensions,
-    Image, 
-    View, 
-    Text, 
-    ScrollView, 
-    KeyboardAvoidingView, 
-    StyleSheet, 
-    TouchableHighlight,
-    Platform,
-    TextInput,
-    Alert
-} from 'react-native';
-import styles from '../constants/Styles';
-import layout from '../constants/Layout';
+import { Alert, Dimensions, Image, Platform, ScrollView, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import { Snackbar } from 'react-native-material-ui';
 import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
-import AYPresentacion from '../components/AYPresentacion';
-import { MAPS_KEY } from '../common/config';
+import AYCarritoIcono from '../components/AYCarritoIcono';
+import AYChatButton from '../components/AYChatButton';
+import LogoTitle from '../components/LogoTitle';
+import styles from '../constants/Styles';
 import validate from '../constants/validate_wrapper';
-import { Snackbar  } from 'react-native-material-ui';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 class RegistroCliente extends React.Component {
 

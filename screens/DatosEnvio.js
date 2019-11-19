@@ -1,36 +1,20 @@
+import Constants from "expo-constants";
 import React from 'react';
-import LogoTitle  from '../components/LogoTitle';
-import AYBuscador from '../components/AYBuscador';
-import AYCategoriaChip from '../components/AYCategoriaChip';
-import AYProducto from '../components/AYProducto';
-import AYChatButton from '../components/AYChatButton';
-import AYCarritoIcono from '../components/AYCarritoIcono';
-import AYRedCircle from '../components/AYRedCircle';
-import MapView from 'react-native-maps';
+import { Alert, ScrollView, Text, TextInput, TouchableHighlight, View } from 'react-native';
 import Geocoder from 'react-native-geocoding';
-import { 
-    View, 
-    Text, 
-    ScrollView, 
-    TouchableHighlight,
-    TextInput,
-    Alert,
-    Platform
-} from 'react-native';
-import styles from '../constants/Styles';
-import layout from '../constants/Layout';
+import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
-import RestApi from '../common/RestApi';
-import AYPresentacion from '../components/AYPresentacion';
-import { MAPS_KEY } from '../common/config';
-
+import AYCarritoIcono from '../components/AYCarritoIcono';
+import AYChatButton from '../components/AYChatButton';
+import AYRedCircle from '../components/AYRedCircle';
+import LogoTitle from '../components/LogoTitle';
+import styles from '../constants/Styles';
 
 
 class DatosEnvio extends React.Component {
 
   constructor(props){
-    super(props);
-        
+    super(props); 
   }
   
   state = {
@@ -69,7 +53,7 @@ class DatosEnvio extends React.Component {
             return false;
         }else{
             try {
-                Geocoder.init(MAPS_KEY);
+                Geocoder.init(Constants.manifest.extra.MAPS_KEY);
                 Geocoder.from(this.state.calle + ' ' + this.state.numero + ', Mar del Plata; Argentina')
                 .then(json => {
                     var location = json.results[0].geometry.location;

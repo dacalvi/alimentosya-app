@@ -1,31 +1,64 @@
 import React from 'react';
-import { Image, View, Text, TouchableHighlight } from 'react-native'
-import AYCarritoIcono from '../components/AYCarritoIcono';
+import { Image, StyleSheet, Text, TouchableHighlight, View, Alert } from 'react-native';
+import { connect } from 'react-redux';
+import { onSignOut } from '../common/auth';
+import AYDrawerOpen from '../components/AYDrawerOpen';
+
 class LogoTitle extends React.Component {
     render() {
       return (
-      
-        <TouchableHighlight onPress={()=>{this.props.navigation.navigate('Marcas');}} style={{ 
-          height: '100%', 
-          width: '100%', 
-          flex: 1,
-          justifyContent: 'space-between', 
-          flexDirection: 'row',
-          
-          padding: 15 }}>
-          
-          
-
-          <Image
-            source={require('../assets/images/iso.png')}
-            style={{ flex: 1,
-              resizeMode : 'contain',
-              width: 90,
-              height: undefined }}
-          />
-
+      <View style={styles.container}>
+        <TouchableHighlight
+          underlayColor="#ffffff00"
+          onPress={()=>{this.props.navigation.navigate('Marcas');}} 
+          style={styles.titleLogo}>
+            <Image
+              source={require('../assets/images/iso.png')}
+              style={styles.imageLogo}
+            />
         </TouchableHighlight>
+        <AYDrawerOpen navigation={this.props.navigation} />
+      </View>
       );
     }
+
+    
+
+    logout(){
+      this.props.logout();
+      onSignOut();
+      this.props.navigation.navigate("Marcas");
+    }
+
   }
-export default LogoTitle;
+
+function mapStateToProps(state){
+    return { cart: state.cart } 
+}
+  
+function mapDispatchToProps(dispatch){
+  return {
+      logout: () => dispatch({type: 'LOGOUT', payload: null})
+  }
+}
+  
+export default connect(mapStateToProps, mapDispatchToProps)(LogoTitle);
+  
+
+var styles = StyleSheet.create({
+  container: {
+    flex:1, 
+    flexDirection: 'row',
+    alignContent: 'space-around',
+    justifyContent: 'center',
+    
+  },
+  titleLogo: {
+    
+  },
+  imageLogo: {
+    flex: 1,
+    resizeMode : 'contain',
+    height: undefined
+  }
+});

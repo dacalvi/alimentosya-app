@@ -32,6 +32,8 @@ class Marcas extends React.Component {
     }
   }
 
+  loading = false;
+
   todosLosProductos = [];
 
   state = {
@@ -51,13 +53,15 @@ class Marcas extends React.Component {
 
   componentWillMount(){
     const api = new RestApi();
+    this.setState({loading:true});
     api.marcas()
     .then((marcas)=>{
-      //console.log(marcas)
       this.todosLosProductos = marcas;
       this.setState({marcas});
+      this.setState({loading:false});
     })
     .catch((err)=>{
+      this.setState({loading:false});
       console.log(err);
     });
   }
@@ -94,8 +98,11 @@ class Marcas extends React.Component {
                 />
             </View>
           </View>
-
-          
+                { 
+                  this.state.loading? 
+                  <Text>Cargando...</Text>:
+                  undefined
+                }
             <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap'}}>
               {this.state.marcas.map((marca, i)=>{
                     return (

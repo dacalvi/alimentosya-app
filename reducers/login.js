@@ -6,6 +6,9 @@ const login = (state = initialState, action) => {
         case 'LOGIN':
             return { jwtToken: action.payload};
             break;
+        case 'LOGOUT':
+            return { jwtToken: null};
+            break;
         default:
             return state;
             break;

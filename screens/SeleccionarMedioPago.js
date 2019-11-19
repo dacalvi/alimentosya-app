@@ -21,6 +21,7 @@ import styles from '../constants/Styles';
 import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
+import * as WebBrowser from 'expo-web-browser';
 
 class SeleccionarMedioPago extends React.Component {
 
@@ -63,7 +64,8 @@ class SeleccionarMedioPago extends React.Component {
         ...this.props.cart
       })
       .then((responseJson)=>{
-        Linking.openURL(responseJson.payment_link);
+        WebBrowser.openBrowserAsync(responseJson.payment_link);
+        //Linking.openURL(responseJson.payment_link);
         //Alert.alert("Aviso", "Sera redirigido al sitio de Mercado Pago para realizar el pago alli");
         this.props.navigation.navigate('Gracias');
       })
@@ -72,6 +74,7 @@ class SeleccionarMedioPago extends React.Component {
         Alert.alert('Consulta', response.error);
       });
   }
+
 
   componentWillMount(){
     console.log(this.props);

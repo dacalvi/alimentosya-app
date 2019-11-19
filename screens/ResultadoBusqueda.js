@@ -1,19 +1,15 @@
 import React from 'react';
-import  LogoTitle  from '../components/LogoTitle';
-import AYBuscador from '../components/AYBuscador';
-import AYCategoriaChip from '../components/AYCategoriaChip';
-import AYProducto from '../components/AYProducto';
-import AYChatButton from '../components/AYChatButton';
-import AYTituloMarca from '../components/AYTituloMarca';
-import { Button } from 'react-native-material-ui';
-import { Image, View, Text, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { TextInput, Colors } from 'react-native-paper';
-import styles from '../constants/Styles';
-import layout from '../constants/Layout';
+import { ScrollView, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import FullWidthImage from 'react-native-fullwidth-image';
 import RestApi from '../common/RestApi';
+import AYBuscador from '../components/AYBuscador';
 import AYCarritoIcono from '../components/AYCarritoIcono';
+import AYCategoriaChip from '../components/AYCategoriaChip';
+import AYChatButton from '../components/AYChatButton';
+import AYProducto from '../components/AYProducto';
+import LogoTitle from '../components/LogoTitle';
+import layout from '../constants/Layout';
+import styles from '../constants/Styles';
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
 

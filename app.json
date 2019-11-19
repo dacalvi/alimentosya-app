@@ -29,12 +29,21 @@
     "description": "",
     "android": {
       "package": "ar.com.movapps.alimentoya4",
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDNamdh-kHIhCoBVVma2RUwM__4G0Co9Eg"
         }
       }
+    },
+    "extra": {
+      "API_URL": "http://alimentosya.96.lt/api/",
+      "API_URL_LOCAL": "http://192.168.1.101/alimentosya/api/",
+      "MAPS_KEY": "AIzaSyCrTCURcvA7iXUUCEa6bFB6YKzDVvElfEQ",
+      "FB_APP_ID": "378843599679315"
     }
   }
 }

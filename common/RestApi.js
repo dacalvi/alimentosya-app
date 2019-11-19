@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { isSignedIn } from './auth';
-import { API_URL } from './config';
+import Constants from "expo-constants";
 
 export default class RestApi {
 
@@ -62,9 +62,34 @@ export default class RestApi {
     });
   }
 
+
+  agregarTelefono(params){
+    return new Promise((resolve, reject)=>{
+      let api = this.post(Constants.manifest.extra.API_URL + 'Pago/agregarTelefono', params);
+      api
+      .then((response) => response.text())
+      .then((responseJson) => {
+        console.log(responseJson);
+        responseJson = JSON.parse(responseJson);
+        if(responseJson.error){
+          reject(responseJson);
+        }else{
+          resolve(responseJson.status);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        //console.log("Problem saving expo token", error, params);
+        reject(error.error);
+        //bugsnag.notify(error.error);
+      });
+    });
+  }
+
+
   olvideContrasenaCliente(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'auth/forgotpassword', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'auth/forgotpassword', params);
       api
       .then((response) => response.text())
       .then((responseJson) => {
@@ -87,8 +112,10 @@ export default class RestApi {
 
   marcas(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'marcas');
+      let api = this.get(Constants.manifest.extra.API_URL + 'marcas');
       api
+      //.then(this.handleErrors)
+      //.then((response) => response.json())
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -105,7 +132,7 @@ export default class RestApi {
 
   shippingtime(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'shippingtime');
+      let api = this.get(Constants.manifest.extra.API_URL + 'shippingtime');
       api
       .then((response) => response.json())
       .then((responseJson) => {
@@ -124,7 +151,7 @@ export default class RestApi {
   pagodirecto(params){
     console.log(params);
     return new Promise((resolve, reject)=>{
-      let api = this.post( API_URL + 'pago/directo', params);
+      let api = this.post( Constants.manifest.extra.API_URL + 'pago/directo', params);
       api
       //.then((response) => response.json())
       .then((response) => response.text())
@@ -149,9 +176,8 @@ export default class RestApi {
   pagomercadopago(params){
     console.log(params);
     return new Promise((resolve, reject)=>{
-      let api = this.post( API_URL + 'pago/mercadopago', params);
+      let api = this.post( Constants.manifest.extra.API_URL + 'pago/mercadopago', params);
       api
-      //.then((response) => response.json())
       .then((response)=>response.text())
       .then((responseJson) => {
         console.log(responseJson);
@@ -173,7 +199,7 @@ export default class RestApi {
 
   productos(params){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'productos/marca/' + params);
+      let api = this.get(Constants.manifest.extra.API_URL + 'productos/marca/' + params);
       api
       //.then(this.handleErrors)
       .then((response) => response.json())
@@ -192,7 +218,7 @@ export default class RestApi {
 
   consultar(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post( API_URL + 'consultas', params);
+      let api = this.post( Constants.manifest.extra.API_URL + 'consultas', params);
       api
       .then((response) => response.json())
       .then((responseJson) => {
@@ -213,7 +239,7 @@ export default class RestApi {
 
   buscar(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post( API_URL + 'buscar', params);
+      let api = this.post( Constants.manifest.extra.API_URL + 'buscar', params);
       api
       //.then(this.handleErrors)
       .then((response) => response.json())
@@ -235,7 +261,7 @@ export default class RestApi {
 
   registerProfesional(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post( API_URL + 'register/profesional', params);
+      let api = this.post( Constants.manifest.extra.API_URL + 'register/profesional', params);
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -252,7 +278,7 @@ export default class RestApi {
 
   registerCliente(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'register/cliente', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'register/cliente', params);
       api
       .then(this.handleErrors)
       .then((response) => response.json())
@@ -271,11 +297,40 @@ export default class RestApi {
     });
   }
 
+  loginWithFacebookToken($token){
+    return new Promise((resolve, reject) => {
+      let api = this.get(Constants.manifest.extra.API_URL + 'auth/facebooklogin/' + $token);
+      api
+      //.then(this.handleErrors)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        if(responseJson.error){
+          reject(responseJson);
+        }else{
+          if(responseJson.token && responseJson.token != ''){
+            //Save token to store
+            AsyncStorage.multiSet([
+              ['token', responseJson.token]
+            ], ()=> {
+              resolve(responseJson);
+            });
+            //this.registerForPushNotificationsAsync();
+          }else{
+            resolve(responseJson);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error.error);
+        //bugsnag.notify(error.error);
+      });
+    });
+  }
   
   login(params){
-    console.log(params);
     return new Promise((resolve, reject) => {
-      let api = this.post(API_URL + 'auth/login', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'auth/login', params);
       api
       .then(this.handleErrors)
       .then((response) => response.json())
@@ -306,7 +361,7 @@ export default class RestApi {
 
   categorias(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'categorias');
+      let api = this.get(Constants.manifest.extra.API_URL + 'categorias');
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -323,7 +378,7 @@ export default class RestApi {
 
   miscategorias(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'categorias/mias');
+      let api = this.get(Constants.manifest.extra.API_URL + 'categorias/mias');
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -340,7 +395,7 @@ export default class RestApi {
 
   serviceRequest(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'servicerequest', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'servicerequest', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -360,7 +415,7 @@ export default class RestApi {
 
   adherirCateogoria(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'adherircategoria', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'adherircategoria', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -379,7 +434,7 @@ export default class RestApi {
 
   disponibilidad(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'disponibilidad', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'disponibilidad', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -398,7 +453,7 @@ export default class RestApi {
 
   ofertas(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'ofertas');
+      let api = this.get(Constants.manifest.extra.API_URL + 'ofertas');
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -415,7 +470,7 @@ export default class RestApi {
 
   postular(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'ofertas', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'ofertas', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -434,7 +489,7 @@ export default class RestApi {
 
   requestedServices(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'requestedservices');
+      let api = this.get(Constants.manifest.extra.API_URL + 'requestedservices');
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -452,7 +507,7 @@ export default class RestApi {
   cancelServiceRequest(id){
     return new Promise((resolve, reject)=>{
       let params = {"solicitud_id": id};
-      let api = this.post(API_URL + 'servicerequest/cancel', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'servicerequest/cancel', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -477,7 +532,7 @@ export default class RestApi {
         "postulacion_aceptada_id": postulacion_id,
         "monto": monto
       };
-      let api = this.post(API_URL + 'postulaciones/aceptar', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'postulaciones/aceptar', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -496,7 +551,7 @@ export default class RestApi {
 
   postulaciones(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'postulaciones');
+      let api = this.get(Constants.manifest.extra.API_URL + 'postulaciones');
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -514,7 +569,7 @@ export default class RestApi {
   cancelarPostulacion(id){
     let params = {"postulacion_id": id};
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'postulaciones/cancelar', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'postulaciones/cancelar', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -533,7 +588,7 @@ export default class RestApi {
 
   enprocesocliente(){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'enproceso');
+      let api = this.get(Constants.manifest.extra.API_URL + 'enproceso');
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -550,7 +605,7 @@ export default class RestApi {
 
   terminartrabajo(params){
     return new Promise((resolve, reject)=>{
-      let api = this.post(API_URL + 'finishservice', params);
+      let api = this.post(Constants.manifest.extra.API_URL + 'finishservice', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
         console.log("service request then", responseJson);
@@ -569,7 +624,7 @@ export default class RestApi {
 
   trabajosterminados(params){
     return new Promise((resolve, reject)=>{
-      let api = this.get(API_URL + 'finishedservices');
+      let api = this.get(Constants.manifest.extra.API_URL + 'finishedservices');
       api.then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){

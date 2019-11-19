@@ -6,7 +6,8 @@ import {
     TouchableHighlight
  } from 'react-native';
 
- import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { StyleSheet } from 'react-native';
 class AYCarritoIcono extends React.Component{
     
     state = {
@@ -27,8 +28,6 @@ class AYCarritoIcono extends React.Component{
     }
 
     componentWillReceiveProps(nextProp){
-
-        //console.log("componentWillReceiveProps", nextProp);
         this.setState({cantidadItems: this.props.cart.cart.length});
         //if(!isFetching && listNotUpdated){
             //this.props.navigation.setParams({ navigation: nextProp.navigation})
@@ -36,39 +35,30 @@ class AYCarritoIcono extends React.Component{
     }
 
     render(){
+
         return (
-            <TouchableHighlight onPress={ ()=>{this.props.navigation.navigate("Carrito")} }>
-                <View style={{marginRight:10}}>
-                <Image 
-                    style={{
-                        width: 25,
-                        height: 25
-                    }}
-                    source={require('../assets/images/carrito.png')}/>
-                    <View style={{ 
-                        left: 15,
-                        top: -10,
-                        backgroundColor: 'black', 
-                        position: 'absolute', 
-                        borderRadius: 10, 
-                        paddingLeft: 5, 
-                        paddingRight: 5
-                        }}>
-                        {
-                            this.state.cantidadItems > 0 ? 
-                            <Text style={{color: 'white', fontSize: 11}}>{this.state.cantidadItems}</Text>:undefined
-                        }   
+            <TouchableHighlight 
+                underlayColor="#ffffff00"
+                onPress={ ()=>{this.props.navigation.navigate("Carrito")} }>
+                <View style={styles.container}>
                     
+                    <Image 
+                        style={styles.image}
+                        source={require('../assets/images/carrito.png')}/>
+                    <View style={styles.bubble}>
+                        { 
+                            this.props.cart.cart.length > 0 ? 
+                            <Text style={styles.bubbleText}>{this.props.cart.cart.length}</Text>:undefined
+                        }
                     </View>
                 </View>
-
             </TouchableHighlight>
         )
     }
 };
 
 function mapStateToProps(state){
-    return { cart: state.cart } 
+    return { cart: state.cart }
 }
   
 function mapDispatchToProps(dispatch){
@@ -76,3 +66,26 @@ function mapDispatchToProps(dispatch){
 }
   
 export default connect(mapStateToProps, mapDispatchToProps)(AYCarritoIcono);
+
+var styles = StyleSheet.create({
+    container : {
+        marginRight:10
+    },
+    image: {
+        width: 25,
+        height: 25
+    },
+    bubble : {
+        left: 15,
+        top: -10,
+        backgroundColor: 'black', 
+        position: 'absolute', 
+        borderRadius: 10, 
+        paddingLeft: 5, 
+        paddingRight: 5
+    },
+    bubbleText : {
+        color: 'white', 
+        fontSize: 11
+    }
+});
