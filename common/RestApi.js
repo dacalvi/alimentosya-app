@@ -5,7 +5,6 @@ import Constants from "expo-constants";
 export default class RestApi {
 
   handleErrors(response) {
-    console.log(response);
     if (!response.ok) {
         //throw Error(response.statusText);
     }
@@ -13,6 +12,7 @@ export default class RestApi {
   }
 
   post(endpoint, params){
+    console.log("POSTING TO " + endpoint, "With Params ", params);
     return new Promise((resolve, reject)=>{
       let headers = {
         Accept: 'application/json', 
@@ -20,6 +20,7 @@ export default class RestApi {
       };
       isSignedIn().then((token) => {
         headers['Authorization'] = token;
+        console.log("TOKEN:"+token);
         resolve(fetch( endpoint , {
           method: 'POST',
           headers: headers,
@@ -27,6 +28,7 @@ export default class RestApi {
           })
         );
       }).catch((error)=>{
+        console.log("POST WITHOUT TOKEN:");
         resolve(fetch( endpoint , {
           method: 'POST',
           headers: headers,
@@ -37,6 +39,7 @@ export default class RestApi {
   }  
 
   get(endpoint){
+    console.log("GETTING FROM " + endpoint);
     return new Promise((resolve, reject)=>{
       let headers = {
         Accept: 'application/json', 
@@ -45,6 +48,7 @@ export default class RestApi {
 
       isSignedIn().then((token) => {
         headers['Authorization'] = token;
+        console.log("TOKEN:"+token);
         resolve(fetch( endpoint , {
           method: 'GET',
           headers: headers,
@@ -54,6 +58,7 @@ export default class RestApi {
 
         
       }).catch((error)=>{
+        console.log("GET WITHOUT TOKEN");
         resolve(fetch( endpoint , {
           method: 'GET',
           headers: headers
@@ -69,7 +74,6 @@ export default class RestApi {
       api
       .then((response) => response.text())
       .then((responseJson) => {
-        console.log(responseJson);
         responseJson = JSON.parse(responseJson);
         if(responseJson.error){
           reject(responseJson);
@@ -78,10 +82,7 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log(error);
-        //console.log("Problem saving expo token", error, params);
         reject(error.error);
-        //bugsnag.notify(error.error);
       });
     });
   }
@@ -93,7 +94,6 @@ export default class RestApi {
       api
       .then((response) => response.text())
       .then((responseJson) => {
-        console.log(responseJson);
         responseJson = JSON.parse(responseJson);
         if(responseJson.error){
           reject(responseJson);
@@ -102,10 +102,7 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log(error);
-        //console.log("Problem saving expo token", error, params);
         reject(error.error);
-        //bugsnag.notify(error.error);
       });
     });
   }
@@ -115,7 +112,6 @@ export default class RestApi {
       let api = this.get(Constants.manifest.extra.API_URL + 'marcas');
       api
       //.then(this.handleErrors)
-      //.then((response) => response.json())
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -149,49 +145,39 @@ export default class RestApi {
   }
 
   pagodirecto(params){
-    console.log(params);
     return new Promise((resolve, reject)=>{
       let api = this.post( Constants.manifest.extra.API_URL + 'pago/directo', params);
       api
       //.then((response) => response.json())
       .then((response) => response.text())
       .then((responseJson) => {
-        console.log(responseJson);
         responseJson = JSON.parse(responseJson);
         if(responseJson.error){
-          console.log(responseJson);
           reject(responseJson);          
         }else{
-          console.log(responseJson);
           resolve(responseJson);
         }
       })
       .catch((error) => {
-        console.log(error);
         reject(error.error);
       });
     });
   }
 
   pagomercadopago(params){
-    console.log(params);
     return new Promise((resolve, reject)=>{
       let api = this.post( Constants.manifest.extra.API_URL + 'pago/mercadopago', params);
       api
       .then((response)=>response.text())
       .then((responseJson) => {
-        console.log(responseJson);
         responseJson = JSON.parse(responseJson);
         if(responseJson.error){
-          console.log(responseJson);
           reject(responseJson);          
         }else{
-          console.log(responseJson);
           resolve(responseJson);
         }
       })
       .catch((error) => {
-        console.log(error);
         reject(error.error);
       });
     });
@@ -223,15 +209,12 @@ export default class RestApi {
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
-          console.log(responseJson);
           reject(responseJson);          
         }else{
-          console.log(responseJson);
           resolve(responseJson);
         }
       })
       .catch((error) => {
-        console.log(error);
         reject(error.error);
       });
     });
@@ -245,15 +228,12 @@ export default class RestApi {
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
-          console.log(responseJson);
           reject(responseJson);          
         }else{
-          console.log(responseJson);
           resolve(responseJson);
         }
       })
       .catch((error) => {
-        console.log(error);
         reject(error.error);
       });
     });
@@ -283,7 +263,6 @@ export default class RestApi {
       .then(this.handleErrors)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log(params , responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -291,7 +270,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log(params, error);
         reject(error.error);
       });
     });
@@ -301,7 +279,7 @@ export default class RestApi {
     return new Promise((resolve, reject) => {
       let api = this.get(Constants.manifest.extra.API_URL + 'auth/facebooklogin/' + $token);
       api
-      //.then(this.handleErrors)
+      .then(this.handleErrors)
       .then((response) => response.json())
       .then((responseJson) => {
         if(responseJson.error){
@@ -321,7 +299,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log(error);
         reject(error.error);
         //bugsnag.notify(error.error);
       });
@@ -352,7 +329,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log(error);
         reject(error.error);
         //bugsnag.notify(error.error);
       });
@@ -398,7 +374,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'servicerequest', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -406,7 +381,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error);
         reject(error.error);
       });
     });
@@ -418,7 +392,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'adherircategoria', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -426,7 +399,7 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error);
+        
         reject(error.error);
       });
     });
@@ -437,7 +410,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'disponibilidad', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -445,7 +417,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error, params);
         reject(error.error);
       });
     });
@@ -473,7 +444,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'ofertas', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -481,7 +451,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error, params);
         reject(error.error);
       });
     });
@@ -510,7 +479,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'servicerequest/cancel', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -518,7 +486,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error, params);
         reject(error.error);
       });
     });
@@ -535,7 +502,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'postulaciones/aceptar', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -543,7 +509,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error, params);
         reject(error.error);
       });
     });
@@ -572,7 +537,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'postulaciones/cancelar', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -580,7 +544,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error, params);
         reject(error.error);
       });
     });
@@ -608,7 +571,6 @@ export default class RestApi {
       let api = this.post(Constants.manifest.extra.API_URL + 'finishservice', params);
       api.then((response) =>  response.json() )
       .then((responseJson) => {
-        console.log("service request then", responseJson);
         if(responseJson.error){
           reject(responseJson);
         }else{
@@ -616,7 +578,6 @@ export default class RestApi {
         }
       })
       .catch((error) => {
-        console.log("service request catch", error, params);
         reject(error.error);
       });
     });

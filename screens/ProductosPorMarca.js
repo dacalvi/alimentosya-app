@@ -1,20 +1,18 @@
+import { Spinner } from 'native-base';
 import React from 'react';
-import  LogoTitle  from '../components/LogoTitle';
-import AYBuscador from '../components/AYBuscador';
-import AYCategoriaChip from '../components/AYCategoriaChip';
-import AYProducto from '../components/AYProducto';
-import AYChatButton from '../components/AYChatButton';
-import AYTituloMarca from '../components/AYTituloMarca';
-import AYCarritoIcono from '../components/AYCarritoIcono';
-
-import { Button } from 'react-native-material-ui';
-import { Image, View, Text, ScrollView, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { TextInput, Colors } from 'react-native-paper';
-import styles from '../constants/Styles';
-import layout from '../constants/Layout';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import FullWidthImage from 'react-native-fullwidth-image';
 import RestApi from '../common/RestApi';
+import AYBuscador from '../components/AYBuscador';
+import AYCarritoIcono from '../components/AYCarritoIcono';
+import AYCategoriaChip from '../components/AYCategoriaChip';
+import AYChatButton from '../components/AYChatButton';
+import AYProducto from '../components/AYProducto';
+import LogoTitle from '../components/LogoTitle';
+import layout from '../constants/Layout';
+import styles from '../constants/Styles';
+
+
 
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
@@ -113,10 +111,13 @@ class ProductosPorMarca extends React.Component {
           
           <View style={{width: '100%'}}>
           { 
-            this.state.loading? 
-            <Text>Cargando...</Text>:
+            this.state.loading?
+            <Spinner color='red' />
+            :
             undefined
           }
+          {this.state.productos.length  == 0 && !this.state.loading? <Text style={{textAlign:"center",paddingVertical:30}}>
+            No hay productos para esta selección</Text>:undefined}
           {this.state.productos.map((producto, i)=>{
                     return (                     
                       <AYProducto 

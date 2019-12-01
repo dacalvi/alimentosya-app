@@ -9,7 +9,7 @@
       "android"
     ],
     "scheme": "alimentosya",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -18,7 +18,9 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 30000,
+      "enabled": true
     },
     "assetBundlePatterns": [
       "**/*"
@@ -26,9 +28,10 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "",
+    "description": "Compra comida para tu mascota desde tu casa. Servicio exclusivo para la ciudad de Mar del Plata, Argentina. ",
     "android": {
-      "package": "ar.com.movapps.alimentoya4",
+      "versionCode": 3,
+      "package": "io.robob.alimentoya",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION"
@@ -40,7 +43,7 @@
       }
     },
     "extra": {
-      "API_URL": "http://alimentosya.96.lt/api/",
+      "API_URL": "https://alimentoya.com/api/",
       "API_URL_LOCAL": "http://192.168.1.101/alimentosya/api/",
       "MAPS_KEY": "AIzaSyCrTCURcvA7iXUUCEa6bFB6YKzDVvElfEQ",
       "FB_APP_ID": "378843599679315"

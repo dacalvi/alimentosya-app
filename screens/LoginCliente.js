@@ -8,6 +8,8 @@ import RestApi from '../common/RestApi';
 import AYFacebookLoginButton from '../components/AYFacebookLoginButton';
 import AYTitleIcon from '../components/AYTitleIcon';
 import LogoTitle from '../components/LogoTitle';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 
 class LoginCliente extends React.Component { 
 
@@ -93,7 +95,7 @@ class LoginCliente extends React.Component {
   }
   
   static navigationOptions = {
-    headerTitle: <LogoTitle />,
+    headerTitle: <LogoTitle drawer={false} />,
     headerStyle: {
       backgroundColor: '#FFFFFF',
     },
@@ -113,7 +115,7 @@ class LoginCliente extends React.Component {
     return (
       <KeyboardAvoidingView 
         style={styles.container} 
-        behavior="position" 
+        behavior="height" 
         keyboardVerticalOffset={-StatusBar.currentHeight}
         enabled>                  
         <AYTitleIcon text="Ingresar a mi cuenta" imageIcon={require('../assets/images/icono_patita.png')} />
@@ -179,9 +181,7 @@ class LoginCliente extends React.Component {
               </View>
               
             </View>
-
-        	<View style={{ height: 50 }} />
-  
+                <KeyboardSpacer/>
       </KeyboardAvoidingView>
       
     );

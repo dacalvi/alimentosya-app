@@ -30,7 +30,11 @@ export default class AYTimeSlots extends React.Component{
     render(){
         return (
             <View>
-
+                {Object.keys(this.props.slots).length == 0 && !this.props.loading? 
+                    <Text style={{textAlign:"center"}}>
+                    Por el momento no hay horarios disponibles de entrega, puede continuar con el proceso y 
+                    se contactarán con usted para definir el horario de entrega.</Text>: undefined
+                }
                 { Object.keys(this.props.slots).map((horario, i)=>{
                     return (
                         <View key={i}>

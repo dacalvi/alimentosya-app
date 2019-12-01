@@ -11,13 +11,14 @@ class LogoTitle extends React.Component {
         <TouchableHighlight
           underlayColor="#ffffff00"
           onPress={()=>{this.props.navigation.navigate('Marcas');}} 
-          style={styles.titleLogo}>
+          >
             <Image
               source={require('../assets/images/iso.png')}
               style={styles.imageLogo}
             />
         </TouchableHighlight>
-        <AYDrawerOpen navigation={this.props.navigation} />
+        {this.props.drawer !== false? <AYDrawerOpen navigation={this.props.navigation} />: <Text></Text>}
+        
       </View>
       );
     }
@@ -53,9 +54,7 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     
   },
-  titleLogo: {
-    
-  },
+  
   imageLogo: {
     flex: 1,
     resizeMode : 'contain',

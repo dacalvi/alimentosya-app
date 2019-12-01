@@ -89,7 +89,7 @@ class RegistroCliente extends React.Component {
       api.registerCliente(registrationData)
       .then((result)=>{
         
-        Alert.alert("Validacion", "Revisa tu cuenta de email para validar tu registro");
+        Alert.alert("Registro Completo", "Ahora puedes ingresar con tu usuario y password");
         this.props.navigation.navigate('LoginCliente');
         /*
         api.login({

@@ -162,7 +162,7 @@ class Carrito extends React.Component {
                     <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Limpiar Carrito</Text>
             </TouchableHighlight>
 
-          <View style={{ height: 150 }} />
+          
         </ScrollView>
         <View><AYChatButton navigation={this.props.navigation} /></View>
       </View>   	

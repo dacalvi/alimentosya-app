@@ -9,9 +9,10 @@ const styles = StyleSheet.create({
         marginLeft: 5
     },
     circles: {
-        paddingTop: 15,
-        paddingLeft: 10,
-        
+        width: 90,
+        paddingLeft:30,
+        paddingTop:5,
+        marginLeft: -10
         
     }
 });

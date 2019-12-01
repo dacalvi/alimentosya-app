@@ -1,6 +1,6 @@
 import Constants from "expo-constants";
 import React from 'react';
-import { Alert, ScrollView, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import { Alert, ScrollView, Text, TextInput, KeyboardAvoidingView, StatusBar, TouchableHighlight, View } from 'react-native';
 import Geocoder from 'react-native-geocoding';
 import MapView from 'react-native-maps';
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import AYChatButton from '../components/AYChatButton';
 import AYRedCircle from '../components/AYRedCircle';
 import LogoTitle from '../components/LogoTitle';
 import styles from '../constants/Styles';
-
+import { Spinner } from 'native-base';
 
 class DatosEnvio extends React.Component {
 
@@ -29,7 +29,9 @@ class DatosEnvio extends React.Component {
     latitude: -34.6036991,
     longitude: -58.383566,
     address: '',
-    mapVisible: false
+    mapVisible: false,
+    deliveryEligible: false,
+    geolocationg: false
     };
 
   static navigationOptions = ({ navigation }) => {
@@ -53,14 +55,16 @@ class DatosEnvio extends React.Component {
             return false;
         }else{
             try {
+                this.setState({geolocationg:true});
                 Geocoder.init(Constants.manifest.extra.MAPS_KEY);
                 Geocoder.from(this.state.calle + ' ' + this.state.numero + ', Mar del Plata; Argentina')
                 .then(json => {
+                    this.setState({geolocationg:false});
                     var location = json.results[0].geometry.location;
                     this.setState({ latitude: location.lat, longitude: location.lng });
                     if(this.distance(location.lat, location.lng, -38.00963,-57.40543) < 17059.05){
                         console.log("showing map");
-                        this.setState({mapVisible: true});
+                        this.setState({mapVisible: true, deliveryEligible: true});
                         Alert.alert("Genial!", "Estas en la zona de envio");
                         this.setState({continuarVisible: true});
                     }else{
@@ -69,6 +73,7 @@ class DatosEnvio extends React.Component {
     
                 })
                 .catch((error)=> {
+                    this.setState({geolocationg:false});
                     if(error.code == 4){
                         Alert.alert("Donde?", "No se encontaron resultados para esa ubicación");
                     }else{
@@ -120,8 +125,12 @@ class DatosEnvio extends React.Component {
   render() {
     const { mapVisible } = this.state;  
     return (
-
-      <View style={{flex: 1}}>
+        <KeyboardAvoidingView 
+            style={{flex: 1}} 
+            behavior="height" 
+            keyboardVerticalOffset={-StatusBar.currentHeight}
+            enabled> 
+      
         <ScrollView style={styles.container}>
             <View style={{flex:1, flexDirection: 'row'}}>
                 <AYTitleIcon text="Envío" imageIcon={require('../assets/images/icono_patita.png')} />
@@ -237,7 +246,7 @@ class DatosEnvio extends React.Component {
                     </View>
                     
             </View>
-
+            {this.state.geolocationg? <Spinner color='red' />:undefined}                        
             {mapVisible? 
                 <MapView
                     style={{ alignSelf: 'stretch', height: 200 }}
@@ -260,9 +269,8 @@ class DatosEnvio extends React.Component {
                 </MapView>
             : undefined }
             
-            
-
-                <TouchableHighlight 
+                        {this.state.deliveryEligible? <TouchableHighlight
+                    
                     onPress={()=>{ this.saveShipmentData();}}
                     style={{    
                         backgroundColor: '#FF0000', 
@@ -275,13 +283,27 @@ class DatosEnvio extends React.Component {
                         marginVertical: 10
                         }}> 
                     <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Continuar</Text>
-                </TouchableHighlight>
+                </TouchableHighlight>:<View
+                    style={{    
+                        backgroundColor: '#DDDDDD', 
+                        borderRadius: 10,
+                        padding: 5,
+                        height: 40,
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        marginHorizontal: 20,
+                        marginVertical: 10
+                        }}> 
+                    <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Continuar</Text>
+                </View>}
+
+                
 
             
-          <View style={{ height: 150 }} />
+          
         </ScrollView>
         <View><AYChatButton navigation={this.props.navigation} /></View>
-      </View>   	
+      </KeyboardAvoidingView>   	
     );
   }
 }

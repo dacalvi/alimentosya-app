@@ -22,6 +22,7 @@ import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
 import AYPresentacion from '../components/AYPresentacion';
+import { Spinner } from 'native-base';
 
 class Horarios extends React.Component {
 
@@ -65,7 +66,7 @@ class Horarios extends React.Component {
 
 
   btnContinuarClick(){
-    if(this.state.selectedSlots.length == 0){
+    if(this.state.selectedSlots.length == 0 && Object.keys(this.state.horarios).length > 0){
         Alert.alert("Error", "Ingrese al menos un horario para entrega");
     }else{
         this.props.addTimeSlots(this.state.selectedSlots);
@@ -99,12 +100,19 @@ class Horarios extends React.Component {
                 marginHorizontal: 30,
             }}>
             { 
-                  this.state.loading? 
-                  <Text>Buscando horarios de entrega...</Text>:
+                  this.state.loading?
+                  <View>
+                    <Spinner color='red' />
+                    <Text style={{textAlign:"center"}}>Buscando horarios de entrega...</Text>
+                  </View> :
                   undefined
                 }
+
+                <Text style={{marginBottom:30}}>Seleccione el horario para la entrega del producto tocando sobre el boton correspondiente. </Text>
+
             <AYTimeSlots 
-                slots={this.state.horarios} 
+                slots={this.state.horarios}
+                loading={this.state.loading}
                 onChange={(selectedSlots)=>{
                     this.setState({selectedSlots})
                 }} />

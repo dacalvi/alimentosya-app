@@ -1,7 +1,7 @@
 import React from 'react';
 import  LogoTitle  from '../components/LogoTitle';
 import { Button } from 'react-native-material-ui';
-import { Image, View, Text, ScrollView, TouchableHighlight, Alert} from 'react-native';
+import { Image, View, Text, ScrollView, TouchableHighlight, Alert, KeyboardAvoidingView, StatusBar} from 'react-native';
 import { TextInput, Colors } from 'react-native-paper';
 import styles from '../constants/Styles';
 import layout from '../constants/Layout';
@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
 import FullWidthImage from 'react-native-fullwidth-image';
 import AYCarritoIcono from '../components/AYCarritoIcono';
-
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 const imageHeight = layout.window.height / 2.5;
 const imageWidth = layout.window.width;
 
@@ -63,6 +63,11 @@ class Consultas extends React.Component {
 
   render() {
     return (
+      <KeyboardAvoidingView 
+        style={{flex: 1}}
+        behavior="height" 
+        keyboardVerticalOffset={-StatusBar.currentHeight}
+        enabled>    
       <View style={{flex: 1}}>
         <ScrollView style={styles.container}>
           <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
@@ -113,7 +118,9 @@ class Consultas extends React.Component {
           </TouchableHighlight>
 
         </ScrollView>
-      </View>    	
+      <KeyboardSpacer/>
+      </View>    
+      </KeyboardAvoidingView>
     );
   }
 }

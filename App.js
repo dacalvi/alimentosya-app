@@ -13,7 +13,7 @@ import { LocalStore } from './common/localstore';
 import throttle from 'lodash.throttle';
 import { AsyncStorage } from 'react-native';
 import {setJSExceptionHandler, setNativeExceptionHandler} from 'react-native-exception-handler';
-
+import { Updates } from 'expo';
 
 const errorHandler = (e, isFatal) => {
   if (isFatal) {
@@ -37,12 +37,6 @@ const errorHandler = (e, isFatal) => {
 };
 
 setJSExceptionHandler(errorHandler);
-
-
-
-
-
-
 
 let store;
 
@@ -71,9 +65,14 @@ AsyncStorage.getItem('state', (err, persistedState)=>{
   }, 1));
 });
 
-
-
 export default class App extends React.Component {
+
+
+  constructor(){
+    super();
+    console.log("DEV MODE:" + __DEV__);
+    Updates.reload();
+  }
 
   state = {
     isLoadingComplete: false,

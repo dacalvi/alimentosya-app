@@ -14,19 +14,20 @@ import {
   KeyboardAvoidingView, 
   StyleSheet, 
   TouchableHighlight,
-  Alert,
-  Linking
+  Alert
 } from 'react-native';
 import styles from '../constants/Styles';
 import layout from '../constants/Layout';
 import { connect } from 'react-redux';
 import RestApi from '../common/RestApi';
 import * as WebBrowser from 'expo-web-browser';
+import {  Linking } from 'expo';
 
 class SeleccionarMedioPago extends React.Component {
 
   constructor(props){
     super(props);
+    console.log(Linking.makeUrl());
   }
   
   static navigationOptions = ({ navigation }) => {
@@ -70,8 +71,8 @@ class SeleccionarMedioPago extends React.Component {
         this.props.navigation.navigate('Gracias');
       })
       .catch((err)=>{
-        console.log("ERROR?"+err);
-        Alert.alert('Consulta', response.error);
+        console.log("ERROR?", err);
+        
       });
   }
 

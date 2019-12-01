@@ -23,7 +23,7 @@ class Gracias extends React.Component {
       headerStyle: {
         backgroundColor: '#FFFFFF',
       },
-      headerRight: <AYCarritoIcono navigation={navigation}/>,
+      headerRight: <Text />,
       headerTintColor: '#FF0000',
       headerTitleStyle: {flex: 1, textAlign: 'center'}
     }
@@ -31,6 +31,12 @@ class Gracias extends React.Component {
 
   componentWillMount(){
     console.log(this.props);
+  }
+
+
+  btnVolverClick(){
+    this.props.clearCart();
+    this.props.navigation.navigate("Marcas");
   }
 
   render() {
@@ -41,12 +47,12 @@ class Gracias extends React.Component {
             <AYTitleIcon text="Pago" imageIcon={require('../assets/images/icono_patita.png')} />
             
             <Text style={{
-                fontSize: 70,
+                fontSize: 50,
                 color: 'red',
                 textAlign: 'center'
             }}>Muchas Gracias!</Text>
             <Text style={{
-                fontSize: 28,
+                fontSize: 18,
                 textAlign: 'center',
                 marginHorizontal:50
             }}>
@@ -58,7 +64,7 @@ class Gracias extends React.Component {
             </View>
 
             <TouchableHighlight 
-                onPress={()=>{ this.props.navigation.navigate("Marcas")}}
+                onPress={()=>{ this.btnVolverClick(); }}
                 style={{    
                     backgroundColor: '#FF0000', 
                     borderRadius: 10,
@@ -72,8 +78,7 @@ class Gracias extends React.Component {
                     <Text style={{ color: 'white', fontWeight:  'bold', fontSize: 18, textAlign: 'center'}}>Volver</Text>
             </TouchableHighlight>
 
-          <View style={{ height: 150 }} />
-        </ScrollView>
+          </ScrollView>
         <View><AYChatButton navigation={this.props.navigation} /></View>
       </View>   	
     );
@@ -86,7 +91,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        
+      clearCart: () => dispatch({type: 'CLEAR_CART', payload: null}),
     }
 }
 
